@@ -1,6 +1,7 @@
 public class Car
 {
   private int myId;
+  private boolean isTargetCar;
   private int length;
   private boolean hasDrawn;
   private boolean canGoHorizontal;
@@ -12,20 +13,24 @@ public class Car
   public Car(int id, int x, int y)
   {
     myId = id;
-    
+    if(myId == 1) isTargetCar = true;
+  
     myXBlocks = new ArrayList<Integer>();
     myYBlocks = new ArrayList<Integer>();
-    
+
     myXBlocks.add(x);
     myYBlocks.add(y);
-    
+
     length = 1;
     hasDrawn = false;
     canGoHorizontal = false;
     canGoVertical = false;
-    
+
     //carColor = color(random(50, 150), random(50, 150), random(50, 150));
-    carColor = color(150, 100, 100);
+    if(isTargetCar)
+      carColor = color(100, 170, 100);
+    else
+      carColor = color(150, 100, 100);
   }
 
   public void toggleDrawn(boolean state)
@@ -37,99 +42,151 @@ public class Car
   {
     myXBlocks.add(x);
     myYBlocks.add(y);
-    
-    if(myXBlocks.get(0) == x)
+
+    if (myXBlocks.get(0) == x)
     {
-     canGoVertical = true;
-     canGoHorizontal = false;
-    }
-    else
+      canGoVertical = true;
+      canGoHorizontal = false;
+    } else
     {
-     canGoVertical = false;
-     canGoHorizontal = true;
+      canGoVertical = false;
+      canGoHorizontal = true;
     }
-    
+
     length++;
   }
-  
+
   public boolean selectCar(int x, int y, int columnSize)
   {
-    if(x > getFirstX()*columnSize  && x < (getLastX()+1)*columnSize && y > getFirstY()*columnSize && y < (getLastY()+1)*columnSize)
+    if (x > getFirstX()*columnSize  && x < (getLastX()+1)*columnSize && y > getFirstY()*columnSize && y < (getLastY()+1)*columnSize)
     {
       return true;
     }
     return false;
   }
-  
-  public void moveCar(int x, int y, int columnSize)
+
+  public void moveCar(int x, int y, int columnSize, ArrayList<Car> carsToCheck)
   {
-    if(!(x > getFirstX()*columnSize  && x < (getLastX()+1)*columnSize && y > getFirstY()*columnSize && y < (getLastY()+1)*columnSize))
+    if (!(x > getFirstX()*columnSize  && x < (getLastX()+1)*columnSize && y > getFirstY()*columnSize && y < (getLastY()+1)*columnSize) && x > 0 && x < 795 && y > 0 && y < 795)
     {
-       if(canGoHorizontal){
-         if(x < getFirstX()*columnSize)
-         {
-           println("mouse left"); 
-         }
-         if(x > (getLastX()+1)*columnSize)
-         {
-          println("mouse right"); 
-         }
-       }
-       else if(canGoVertical)
-       {
-         if(y < getFirstY()*columnSize)
-         {
-          println("mouse up"); 
-         }
-         if(y > (getLastY()+1)*columnSize)
-         {
-           println("mouse down");
-         }
-       }
+
+
+      if (canGoHorizontal) {
+        if (x < getFirstX()*columnSize)
+        {         
+          for (Car c : carsToCheck)
+          {
+            if (c.getId() != myId && c.checkCollision(getFirstX()-1, getFirstY())) 
+              return;
+          }
+
+          for (int i = 0; i < myXBlocks.size(); i++)
+          {
+            myXBlocks.set(i, myXBlocks.get(i)-1);
+          }
+        }
+        else if (x > (getLastX()+1)*columnSize)
+        {        
+          for (Car c : carsToCheck)
+          {
+            if (c.getId() != myId && c.checkCollision(getLastX()+1, getFirstY())) 
+              return;
+          }
+          
+          for (int i = 0; i < myXBlocks.size(); i++)
+          {
+            myXBlocks.set(i, myXBlocks.get(i)+1);
+          }
+        }
+      } else if (canGoVertical)
+      {
+        if (y < getFirstY()*columnSize)
+        {         
+          for (Car c : carsToCheck)
+          {
+            if (c.getId() != myId && c.checkCollision(getFirstX(), getFirstY()-1)) 
+              return;
+          }
+          
+          for (int i = 0; i < myYBlocks.size(); i++)
+          {
+            myYBlocks.set(i, myYBlocks.get(i)-1);
+          }
+        }
+        else if (y > (getLastY()+1)*columnSize)
+        {         
+          for (Car c : carsToCheck)
+          {
+            if (c.getId() != myId && c.checkCollision(getFirstX(), getLastY()+1)) 
+              return;
+          }
+          
+          for (int i = 0; i < myYBlocks.size(); i++)
+          {
+            myYBlocks.set(i, myYBlocks.get(i)+1);
+          }
+        }
+      }
     }
-    
   }
-  
+
+  public boolean checkCollision(int x, int y)
+  {
+    for (int i = 0; i < myXBlocks.size(); i++)
+    {
+      for (int j = 0; j < myYBlocks.size(); j++)
+      {
+        if (myXBlocks.get(i) == x && myYBlocks.get(j) == y) return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean isTargetCar()
+  {
+   return isTargetCar; 
+  }
+
   public void setColor(int newColor)
   {
-   this.carColor = newColor;
+    this.carColor = newColor;
   }
-  
+
   public int getId()
   {
     return myId;
   }
-  
+
   public int getLength()
   {
     return length;
   }
-  
+
   public boolean getDrawn()
   {
-   return hasDrawn; 
+    return hasDrawn;
   }
-  
+
   public int getFirstX()
   {
-   return myXBlocks.get(0); 
+    return myXBlocks.get(0);
   }
-  
+
   public int getFirstY()
   {
-   return myYBlocks.get(0); 
+    return myYBlocks.get(0);
   }
-  
+
   public int getLastX()
   {
-   return myXBlocks.get(myXBlocks.size()-1); 
+    return myXBlocks.get(myXBlocks.size()-1);
   }
-  
+
   public int getLastY()
   {
-   return myYBlocks.get(myYBlocks.size()-1); 
+    return myYBlocks.get(myYBlocks.size()-1);
   }
-  
+
   public int getColor()
   {
     return carColor;
