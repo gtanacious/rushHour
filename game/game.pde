@@ -9,6 +9,7 @@ int[][] board =  {
 };
 int boardWidth;
 ArrayList<Car> cars;
+Car mySelectedCar;
 
 void setup()
 {
@@ -16,12 +17,12 @@ void setup()
   boardWidth = 800/board.length;
 
   cars = new ArrayList<Car>();
-  
+
   for (int y = 0; y < board.length; y++)
   {
     for (int x = 0; x < board[y].length; x++)
     {
-      if(board[y][x] != 0)
+      if (board[y][x] != 0)
       {
         boolean willAdd = true;
         for (Car c : cars) {
@@ -38,8 +39,6 @@ void setup()
       }
     }
   }
-
-  noLoop();
 }
 
 void draw()
@@ -60,41 +59,23 @@ void draw()
   {
     for (int x = 0; x < board[y].length; x++)
     {
-       for(Car c : cars)
-       {
-         if(c.getId() == board[y][x] && !c.getDrawn())
-         {
-           int length = c.getLength();
-           
-           println(c.getLastY() + "   " + c.getFirstY() + "   " + c.getId());
-           fill(c.getColor());
-           rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth,(c.getLastY()+1 - c.getFirstY()) * boardWidth);
-           //rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth, boardWidth, boardWidth);
-           c.toggleDrawn(true);
-         }
-       }
+      for (Car c : cars)
+      {
+        if (c.getId() == board[y][x] && !c.getDrawn())
+        {
+          fill(c.getColor());
+          rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+          c.toggleDrawn(true);
+        }
+      }
     }
   }
-  
-  for (int y = 0; y < board.length; y++)
-  {
-   for (int x = 0; x < board[y].length; x++)
-   {
-     for(Car c : cars)
-     {
-       if( c.selectCar(y, x, boardWidth))
-       {
-        rect(x, y, 1, 1); 
-       }
-     }
-   }
-  }
 
-  for(Car c : cars)
-   {
-       c.toggleDrawn(false);
-   }
-  
+
+  for (Car c : cars)
+  {
+    c.toggleDrawn(false);
+  }
 }
 
 
@@ -102,10 +83,23 @@ void draw()
 void mousePressed()
 {
 
-  for(Car c : cars)
-   {
-      c.selectCar(mouseX, mouseY, boardWidth);
-   }
-  
-  
+  for (Car c : cars)
+  {
+    if (c.selectCar(mouseX, mouseY, boardWidth))
+    {
+      println(c.getId());
+      if (!c.equals(mySelectedCar))
+      {
+        if(mySelectedCar != null) mySelectedCar.setColor(color(red(mySelectedCar.getColor())-50, blue(mySelectedCar.getColor())-50, green(mySelectedCar.getColor())-50));
+        int col = color(red(c.getColor())+50, blue(c.getColor())+50, green(c.getColor())+50);
+        c.setColor(col);
+        mySelectedCar = c;
+      }
+    }
+  }
+}
+
+void mouseDragged()
+{
+   mySelectedCar.moveCar(mouseX, mouseY, boardWidth); 
 }
