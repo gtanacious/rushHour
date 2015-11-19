@@ -77,20 +77,13 @@ void homeBuilding(float homePositionX, float homePositionY) {
   }
   //
   fill(210, 210, 210);
-  stroke(100, 100, 100);
-  strokeWeight(4);
-  line(291, -201, 447, -358);//roof shadow
-  line(300, -494, 440, -353.5);
   stroke(155, 155, 155);
-  line(298, -490, 435, -353.5);
-  line(287, -201, 443, -359);
+  strokeWeight(4);
+  line(291, -201, 447, -358);
   noStroke();
-  fill(0);//below shadow
   rect(3, -197, 290, 4);
-  fill(25, 25, 25);
+  fill(155, 155, 155);
   rect(3, -193, 290, 4);
-  fill(50, 50, 50);
-  rect(3, -189, 290, 4);
   noStroke();
   fill(123, 109, 72);
   rect(0, -10, 305, 10);
