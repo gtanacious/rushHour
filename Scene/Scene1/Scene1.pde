@@ -38,11 +38,24 @@ void setup() {
   scene2Start = false;
   opac = 0;
   
-  //img1 = loadImage("Lab8.jpg");
-  //img1.loadPixels();
-  //img1.resize(200, 231);
-  //println(img1.height, img1.width);
+  img1 = loadImage("Lab8.jpg");
+  img1.loadPixels();
+  img1.resize(200, 231);
+  println(img1.height, img1.width);
 }
+
+
+void mousePressed() {
+  if (mouseX < width && mouseX > 0 && mouseY > 0 && mouseY < height*.2) {
+    dialogue[i] = true;
+    if (dialogue[2] == true) {
+      scene1Done = true;
+    }
+  }
+  i ++;
+}
+
+
 
 void drawPerson() {
   noStroke();
@@ -194,6 +207,117 @@ void drawPerson() {
   popMatrix();
 }
 
+void drawCouch() {
+  fill(43, 137, 4);
+  pushMatrix();
+    translate(100, 400);
+    rect(0, 0, 300, 200);
+    arc(0, 75, 150, 150, -1*PI, -1*PI/2);
+    arc(300, 75, 150, 150, -1*PI/2, 0);
+    pushMatrix();
+      stroke(0);
+      strokeWeight(.5);
+      rect(-75, 80, 75, 120);
+      rect(0, 100, 300, 100);
+      rect(300, 80, 75, 120);
+      ellipse(-37.5, 80, 75, 75);
+      ellipse(337.5, 80, 75, 75);
+      ellipse(-37.5, 85, 75, 75);
+      ellipse(337.5, 85, 75, 75);
+    popMatrix();
+    
+  popMatrix();
+}
+
 void draw() {
-  drawPerson();
+  background(#8BD0FA);
+  if (scene2Start == false) {
+    fill(150);
+    rect(0, height*.7, width, height*.3);
+    fill(95, 53, 54);
+    rect(500, 200, 220, 251);
+    image(img1, 510, 210);
+    
+    drawCouch();
+      
+    drawPerson();
+
+    /////////////////
+
+    if (LfarmR > radians(90)) {
+      waveF = true;
+    }
+    if (LfarmR < radians(10)) {
+      waveF = false;
+    }
+
+    if (waveF == true) {
+      LfarmR -= radians(2);
+    } else {
+      LfarmR += radians(2);
+    }
+
+    /////////////////
+
+
+    if (RfarmR > radians(-100)) {
+      scratch = true;
+    }
+    if (RfarmR < radians(-150)) {
+      scratch = false;
+    }
+
+    if (scratch == true) {
+      RfarmR -= radians(1);
+    } else {
+      RfarmR += radians(1);
+    }
+
+    /////////////////
+
+    if (tx < -6) {
+      pupilLeft = true;
+    }
+    if (tx > 6) {
+      pupilLeft = false;
+    }
+    if (pupilLeft) {
+      tx += 1;
+    } else {
+      tx -= 1;
+    }
+
+    /////////////////
+
+    
+
+    fill(0, 150);
+    rect(0, 0, width, height*.2);
+
+    fill(255);
+    textSize(25);
+    textAlign(CENTER);
+    if (scene1Done == false) {
+      if (dialogue[0] ==false) {
+        text("This is Max. It is his first day of work.", width/2, height*.05);
+        text("If he is late, he'll probably get fired.", width/2, height*.1);
+      } else {
+        if (dialogue[1] == false) {
+          text(" 'OH NO! I'm going to be late for work!' ", width/2, height*.1);
+        } else {
+          text(" 'Will you help me get to work on time?' ", width/2, height*.1);
+        }
+      }
+    }
+  } 
+  if(scene1Done == true) {
+    fill(0, opac);
+    rect(0, 0, width, height);
+    if(opac < 255) {
+      opac += 2;
+    } else {
+      opac += 0;
+      scene2Start = true;
+    }
+  }
 }
