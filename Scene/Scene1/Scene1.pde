@@ -1,3 +1,5 @@
+//Scene1: wake up and find out late to work
+
 PImage img1;
 
 float LlegR;

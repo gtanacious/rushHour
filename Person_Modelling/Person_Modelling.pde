@@ -1,4 +1,3 @@
-PImage img1;
 
 float LlegR;
 float RlegR;
@@ -8,10 +7,6 @@ float LfarmR;
 float RfarmR;
 float tx;
 float opac;
-
-int numDialogue = 3;
-int i = 0;
-boolean[] dialogue = new boolean[numDialogue];
 
 boolean scene1Done, scene2Start;
 boolean waveF;
@@ -28,20 +23,12 @@ void setup() {
   RfarmR = radians(-100);
   tx = 0;
 
-  for (int j=0; j<numDialogue; j++) {
-    dialogue[j] = false;
-  }
-
   waveF = false;
   pupilLeft = false;
   scene1Done = false;
   scene2Start = false;
   opac = 0;
   
-  //img1 = loadImage("Lab8.jpg");
-  //img1.loadPixels();
-  //img1.resize(200, 231);
-  //println(img1.height, img1.width);
 }
 
 void drawPerson() {
