@@ -1,5 +1,8 @@
 //Scene2: run away from home
 
+import processing.sound.*;
+SoundFile file;
+
 float LlegR;
 float RlegR;
 float LarmR;
@@ -35,6 +38,9 @@ void setup() {
   scene2Start = false;
   opac = 0;
   
+  file = new SoundFile(this, "Scream.mp3");
+  file.amp(.4);
+  file.play();
 }
 
 void drawPerson(float personX, float personY) {
@@ -407,7 +413,7 @@ void draw() {
   }
 
   if (personXEnd == 250 && personYEnd < 715) {
-    personYEnd++;
+    personYEnd += 0.5;
   }
 
   if (personYEnd == 715) {

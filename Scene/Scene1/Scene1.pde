@@ -1,5 +1,8 @@
 //Scene1: wake up and find out late to work
 
+import processing.sound.*;
+SoundFile file;
+
 PImage img1;
 
 float LlegR;
@@ -44,6 +47,10 @@ void setup() {
   img1.loadPixels();
   img1.resize(200, 231);
   println(img1.height, img1.width);
+  
+  file = new SoundFile(this, "Scream.mp3");
+  file.amp(.6);
+  file.loop();
 }
 
 
