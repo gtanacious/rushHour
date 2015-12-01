@@ -18,9 +18,9 @@ void setup()
   int[][] board1 =  {
     {0, 0, 0, 4, 0, 0}, 
     {0, 0, 0, 4, 0, 0}, 
+    {0, 0, 0, 0, 0, 0}, 
+    {0, 0, 0, 0, 0, 0}, 
     {1, 1, 0, 0, 0, 0}, 
-    {0, 0, 0, 0, 0, 0}, 
-    {0, 0, 0, 0, 0, 0}, 
     {0, 0, 0, 0, 0, 0}
   };
   level.add(board1);
@@ -84,6 +84,11 @@ void setup()
       }
     }
   }
+  
+  for(Car c: cars)
+  {
+    c.calculateBounds(boardWidth); 
+  }
   timer = 0;//60000;
 }
 
@@ -125,12 +130,31 @@ void draw()
         {
           
           fill(c.getColor());
-          if(c.canGoVertical()) rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + shift, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
-          else if (c.canGoHorizontal) rect(c.getFirstX() * boardWidth + shift, c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
-          if(c.checkCollisionWithShift(c.getFirstX() * boardWidth + shift, c.getFirstY() * boardWidth, boardWidth, shift)) 
+          if(c.canGoVertical())
           {
-
+            
+            for(Car d : cars)
+            {
+               if(!c.equals(d) && (d.yBounds.get(0).equals(c.yBounds.get(1))))
+               {
+                  println("collides");
+               }
+            }
+            c.yBounds.set(0, c.yBounds.get(0)+1);
+            c.yBounds.set(1, c.yBounds.get(1)+1);
+            rect(c.xBounds.get(0), c.yBounds.get(0), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+            
           }
+          else if (c.canGoHorizontal)
+          {
+             c.xBounds.set(0, c.xBounds.get(0)+1);
+             c.xBounds.set(1, c.xBounds.get(1)+1);
+             rect(c.xBounds.get(0), c.yBounds.get(0), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+            
+          }
+          
+          
+           
           c.toggleDrawn(true);
         }
       }
@@ -148,6 +172,9 @@ void draw()
   {
     timeLeft =  timer - millis();
   }
+  fill(200);
+  rect(800, 0, 200, 800);
+  
   fill(0);
   textAlign(CENTER);
   textFont(createFont("Times", 80, true), 30);

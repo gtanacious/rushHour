@@ -8,6 +8,8 @@ public class Car
   private boolean canGoVertical;
   private ArrayList<Integer> myXBlocks;
   private ArrayList<Integer> myYBlocks;
+  private ArrayList<Integer> yBounds;
+  private ArrayList<Integer> xBounds;
   private int carColor;
 
   public Car(int id, int x, int y)
@@ -17,12 +19,16 @@ public class Car
   
     myXBlocks = new ArrayList<Integer>();
     myYBlocks = new ArrayList<Integer>();
+    
+    yBounds = new ArrayList<Integer>();
+    xBounds = new ArrayList<Integer>();
 
     myXBlocks.add(x);
     myYBlocks.add(y);
 
     length = 1;
     
+
     hasDrawn = false;
     canGoHorizontal = false;
     canGoVertical = false;
@@ -153,6 +159,15 @@ public class Car
       }
     }
     return false;
+  }
+  
+  public void calculateBounds(int boardWidth)
+  {
+    yBounds.add(this.getFirstY() * boardWidth);
+    yBounds.add((this.getLastY() * boardWidth) + boardWidth);
+    
+    xBounds.add(this.getFirstX() * boardWidth);
+    xBounds.add(this.getLastX() * boardWidth + boardWidth);
   }
   
   public boolean isTargetCar()
