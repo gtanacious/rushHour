@@ -1,3 +1,8 @@
+//Scene1: wake up and find out late to work
+
+//import processing.sound.*;
+//SoundFile file;
+
 PImage img1;
 
 float LlegR;
@@ -9,6 +14,10 @@ float RfarmR;
 float tx;
 float opac;
 
+//movement variable
+float personXEnd = 343;
+float personYEnd = 673;
+
 int numDialogue = 3;
 int i = 0;
 boolean[] dialogue = new boolean[numDialogue];
@@ -18,7 +27,24 @@ boolean waveF;
 boolean scratch;
 boolean pupilLeft;
 
-//combining the house and the person to perform transition.
+void rightFence() {
+  //right fence
+  pushMatrix();
+  translate(100, 800);//same as the homeBuilding
+  strokeWeight(5);
+  stroke(255);
+  line(190, -100, 190, -43);
+  line(187.5, -100, 192.5, -100);
+  strokeWeight(3);
+  line(190, -95, 295, -95);
+  line(190, -47, 295, -47);
+  strokeWeight(2);
+  for (int i = 0; i < 10; i++) {
+    line(200 + i*10, -95, 200 + i*10, -47);
+  }
+  popMatrix();
+}
+
 void homeBuilding(float homePositionX, float homePositionY) {
   pushMatrix();
   //moving the whole building
@@ -37,7 +63,7 @@ void homeBuilding(float homePositionX, float homePositionY) {
   rect(313, -210, 278, 207);
   rect(590, -196, 8, 193);
   rect(309, -196, 8, 193);
-  //
+  //window
   strokeWeight(7);
   stroke(180, 180, 180);
   fill(0);
@@ -58,8 +84,11 @@ void homeBuilding(float homePositionX, float homePositionY) {
   line(300, -195, 300, 0);
   stroke(210, 210, 210);
   fill(210, 210, 210);
-  line(295, -195, 295, -40);//flag
-  line(190, -100, 190, -40);
+  line(295, -195, 295, -40);
+  //right fence
+  /*strokeWeight(5);
+  stroke(255);
+  line(190, -100, 190, -43);
   line(187.5, -100, 192.5, -100);
   strokeWeight(3);
   line(190, -95, 295, -95);
@@ -67,8 +96,10 @@ void homeBuilding(float homePositionX, float homePositionY) {
   strokeWeight(2);
   for (int i = 0; i < 10; i++) {
     line(200 + i*10, -95, 200 + i*10, -47);
-  }
+  }*/
+  //left fence
   strokeWeight(5);
+  stroke(255);
   line(105, -100, 105, -40);
   line(102.5, -100, 107.5, -100);
   line(0, -195, 0, 0);
@@ -107,7 +138,7 @@ void homeBuilding(float homePositionX, float homePositionY) {
   line(0, -20, 302.5, -20);
   line(0, -30, 300, -30);
   line(0, -40, 297.5, -40);
-  //
+  //window
   stroke(255);
   fill(0);
   strokeWeight(7);
@@ -122,7 +153,7 @@ void homeBuilding(float homePositionX, float homePositionY) {
   line(245, -355, 245, -245);
   pushMatrix();
   translate(0, 10);
-  //
+  //window
   strokeWeight(7);
   rect(410, -180, 80, 120);
   strokeWeight(1);
@@ -132,7 +163,7 @@ void homeBuilding(float homePositionX, float homePositionY) {
   line(450, -180, 450, -60);
   line(430, -180, 430, -60);
   line(470, -180, 470, -60);
-  //
+  //window
   strokeWeight(7);
   rect(360, -180, 40, 120);
   strokeWeight(4.5);
@@ -141,7 +172,7 @@ void homeBuilding(float homePositionX, float homePositionY) {
   line(360, -150, 400, -150);
   line(360, -90, 400, -90);
   line(380, -180, 380, -60);
-  //
+  //window
   strokeWeight(7);
   rect(500, -180, 40, 120);
   strokeWeight(4.5);
@@ -172,8 +203,6 @@ void homeBuilding(float homePositionX, float homePositionY) {
   popMatrix();
 }
 
-
-
 void setup() {
   size(800, 800);
   LlegR = radians(10);
@@ -199,6 +228,10 @@ void setup() {
   img1.loadPixels();
   img1.resize(200, 231);
   println(img1.height, img1.width);
+
+  //file = new SoundFile(this, "Scream.mp3");
+  //file.amp(.6);
+  //file.loop();
 }
 
 
@@ -208,18 +241,20 @@ void mousePressed() {
     if (dialogue[2] == true) {
       scene1Done = true;
     }
+    if (i < 2) {
+      i++;
+    }
   }
-  i ++;
 }
 
 
 
-void drawPerson() {
+void drawPerson(float personX, float personY, float scaleF) {
   noStroke();
 
   pushMatrix();
-  translate(400, 400);
-
+  translate(personX, personY);
+  scale(scaleF);
   //Left leg
   pushMatrix();
   translate(-60, 72.5);
@@ -387,8 +422,9 @@ void drawCouch() {
 }
 
 void draw() {
-  background(#8BD0FA);
+
   if (scene2Start == false) {
+    background(#8BD0FA);
     fill(150);
     rect(0, height*.7, width, height*.3);
     fill(95, 53, 54);
@@ -397,7 +433,7 @@ void draw() {
 
     drawCouch();
 
-    drawPerson();
+    drawPerson(400, 400, 1);
 
     /////////////////
 
@@ -467,33 +503,98 @@ void draw() {
       }
     }
   } 
-  
-  if (scene2Start) {
+
+  if (scene2Start == true) {
+    background(200, 200, 255);
     fill(100);
     rect(0, 700, width, 100);
-    homeBuilding(200, 700);
-  }
-  
-  
-  
-  
-  if (scene1Done == true) {
-    fill(0, opac);
-    rect(0, 0, width, height);
-    if (scene2Start == false) {
-      if (opac < 255) {
-        opac += 2;
-      } else {
-        opac += 0;
-        scene2Start = true;
-      }
+    pushMatrix();
+    translate(-100, -100);
+    homeBuilding(100, 800);
+
+    if (personXEnd > 250 && personYEnd != 750) {
+      drawPerson(personXEnd, personYEnd, 0.3);
+      rightFence();
+    } else {
+      rightFence();
+      drawPerson(personXEnd, personYEnd, 0.3);
     }
-    if (scene2Start == true && trans1Done == false) {
-      if (opac > 0) {
-        opac -= 2;
-      } else {
-        opac -=0;
-      }
+
+    //arm animation
+    if (LfarmR > radians(90)) {
+      waveF = true;
+    }
+    if (LfarmR < radians(10)) {
+      waveF = false;
+    }
+
+    if (waveF == true) {
+      LfarmR -= radians(2);
+    } else {
+      LfarmR += radians(2);
+    }
+
+    if (RfarmR > radians(-100)) {
+      scratch = true;
+    }
+    if (RfarmR < radians(-150)) {
+      scratch = false;
+    }
+
+    if (scratch == true) {
+      RfarmR -= radians(1);
+    } else {
+      RfarmR += radians(1);
+    }
+
+    //eye animation
+    if (tx < -6) {
+      pupilLeft = true;
+    }
+    if (tx > 6) {
+      pupilLeft = false;
+    }
+    if (pupilLeft) {
+      tx += 1;
+    } else {
+      tx -= 1;
+    }
+
+    //whole person animation
+    if (personXEnd > 250 && personYEnd != 750) {
+      personXEnd--;
+    }
+
+    if (personXEnd == 250 && personYEnd < 750) {
+      personYEnd += 0.5;
+    }
+
+    if (personYEnd == 750) {
+      personXEnd++;
+    }
+    popMatrix();
+  }
+
+
+
+if (scene1Done == true) {
+  fill(0, opac);
+  rect(0, 0, width, height);
+  if (scene2Start == false) {
+    if (opac < 255) {
+      opac += 2;
+    } else {
+      opac += 0;
+      scene2Start = true;
     }
   }
+  if (scene2Start == true && trans1Done == false) {
+    if (opac > 0) {
+      opac -= 2;
+    } else {
+      opac -=0;
+      trans1Done = true;
+    }
+  }
+}
 }
