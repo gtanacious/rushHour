@@ -60,8 +60,10 @@ void mousePressed() {
     if (dialogue[2] == true) {
       scene1Done = true;
     }
+    if (i < 2) {
+      i++;
+    }
   }
-  i ++;
 }
 
 
