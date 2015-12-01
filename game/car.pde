@@ -1,8 +1,8 @@
 public class Car
 {
   private int myId;
-  private boolean isTargetCar;
   private int length;
+  private boolean isTargetCar;
   private boolean hasDrawn;
   private boolean canGoHorizontal;
   private boolean canGoVertical;
@@ -22,6 +22,7 @@ public class Car
     myYBlocks.add(y);
 
     length = 1;
+    
     hasDrawn = false;
     canGoHorizontal = false;
     canGoVertical = false;
@@ -141,7 +142,19 @@ public class Car
     }
     return false;
   }
-
+  
+   public boolean checkCollisionWithShift(int x, int y, int blockSize, int shift)
+  {
+    for (int i = 0; i < myXBlocks.size(); i++)
+    {
+      for (int j = 0; j < myYBlocks.size(); j++)
+      {
+        if (myXBlocks.get(i)*blockSize + shift == x && myYBlocks.get(j)*blockSize + shift == y) return true;
+      }
+    }
+    return false;
+  }
+  
   public boolean isTargetCar()
   {
    return isTargetCar; 
@@ -190,5 +203,15 @@ public class Car
   public int getColor()
   {
     return carColor;
+  }
+  
+  public boolean canGoVertical()
+  {
+     return canGoVertical; 
+  }
+  
+  public boolean canGoHorizontal()
+  {
+     return canGoHorizontal; 
   }
 }
