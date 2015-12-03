@@ -41,6 +41,17 @@ int[] carVelocityX = new int[3];
 int[] carVelocityY = new int[3];
 int[] carFinalY = new int[3];
 
+ArrayList<int[][]> level;
+int boardWidth, anim;
+boolean hasWon, hasLost;
+ArrayList<Car> cars;
+Car mySelectedCar;
+int[][] board; 
+int levelNumber;
+int shift;
+int timer;
+float textAnim;
+
 
 boolean scene1Done, scene2Start, trans1Done, scene2Done, scene3Start, trans2Done, scene3Done, scene4Start, trans3Done;
 boolean waveF;
@@ -355,7 +366,7 @@ void homeBuilding(float homePositionX, float homePositionY) {
 }
 
 void setup() {
-  size(800, 800);
+  size(1000, 800);
   LlegR = radians(10);
   RlegR = radians(-10);
   LarmR = radians(75);
@@ -395,8 +406,8 @@ void setup() {
   stripeVel = 4;
   for (int i = 0; i < 8; i++) {
     posY[i] = -800 + 200*i;
-    posX1[i] = 270;
-    posX2[i] = 500;
+    posX1[i] = 325;
+    posX2[i] = 650;
   }
 
   carFinalY[0] = 100;
@@ -411,6 +422,80 @@ void setup() {
   //file = new SoundFile(this, "Scream.mp3");
   //file.amp(.6);
   //file.loop();
+
+  level = new ArrayList<int[][]>();
+
+  int[][] board1 =  {
+    {0, 0, 0, 2, 0, 0}, 
+    {4, 4, 0, 2, 0, 0}, 
+    {0, 1, 1, 2, 0, 0}, 
+    {5, 3, 3, 3, 0, 0}, 
+    {5, 0, 0, 0, 0, 0}, 
+    {5, 0, 0, 0, 0, 0}
+  };
+  level.add(board1);
+  int[][] board2 =  {
+    {2, 0, 0, 11, 0, 0}, 
+    {2, 3, 3, 11, 0, 10}, 
+    {1, 1, 4, 0, 0, 10}, 
+    {0, 5, 4, 8, 8, 10}, 
+    {0, 5, 6, 7, 0, 0}, 
+    {0, 0, 6, 7, 9, 9}
+  };
+  level.add(board2);
+  int[][] board3 =  {
+    {2, 3, 3, 3, 5, 0}, 
+    {2, 4, 4, 4, 5, 0}, 
+    {1, 1, 10, 11, 5, 0}, 
+    {0, 0, 10, 11, 6, 6}, 
+    {0, 0, 9, 9, 9, 7}, 
+    {0, 0, 0, 8, 8, 7}
+  };
+  level.add(board3);
+  int[][] board4 =  {
+    {6, 6, 6, 4, 2, 3}, 
+    {7, 5, 5, 4, 2, 3}, 
+    {7, 0, 1, 1, 2, 3}, 
+    {8, 8, 10, 0, 0, 0}, 
+    {0, 9, 10, 0, 13, 13}, 
+    {0, 9, 11, 11, 12, 12}
+  };
+  level.add(board4);
+  levelNumber = 0;
+
+  board = level.get(levelNumber);
+  boardWidth = 800/board.length;
+
+  hasLost = hasWon = false;
+  anim = 0;
+  shift = 0;
+  textAnim = 0;
+
+  cars = new ArrayList<Car>();
+
+  for (int y = 0; y < board.length; y++)
+  {
+    for (int x = 0; x < board[y].length; x++)
+    {
+      if (board[y][x] != 0)
+      {
+        boolean willAdd = true;
+        for (Car c : cars) {
+          if (c.getId() == board[y][x] )
+          {
+            c.addBlock(x, y);
+            willAdd = false;
+          }
+        }
+        if (willAdd)
+        {
+          cars.add(new Car(board[y][x], x, y));
+        }
+      }
+    }
+  }
+
+  timer = 60000;
 }
 
 
@@ -424,8 +509,8 @@ void mousePressed() {
       i++;
     }
   }
-  
-  if(scene3Start == true && mouseX < width && mouseX > 0 && mouseY > height*.8 && mouseY < height) {
+
+  if (scene3Start == true && mouseX < width && mouseX > 0 && mouseY > height*.8 && mouseY < height) {
     dialogue2[k] = true;
     if (dialogue2[1] == true) {
       scene3Done = true;
@@ -434,9 +519,98 @@ void mousePressed() {
       k++;
     }
   }
+
+  if (hasWon)
+  {    
+    levelNumber++;
+    board = level.get(levelNumber);  
+    hasWon = false;
+    anim = 0;
+    textAnim = 0;
+
+    timer = millis() + 60000 + (60000 * levelNumber);
+
+    cars = new ArrayList<Car>();
+
+    for (int y = 0; y < board.length; y++)
+    {
+      for (int x = 0; x < board[y].length; x++)
+      {
+        if (board[y][x] != 0)
+        {
+          boolean willAdd = true;
+          for (Car c : cars) {
+            if (c.getId() == board[y][x] )
+            {
+              c.addBlock(x, y);
+              willAdd = false;
+            }
+          }
+          if (willAdd)
+          {
+            cars.add(new Car(board[y][x], x, y));
+          }
+        }
+      }
+    }
+  } else if (hasLost)
+  {
+    levelNumber = 0;
+    board = level.get(levelNumber);  
+    hasWon = false;
+    hasLost = false;
+    anim = 0;
+    textAnim = 0;
+    timer = millis() + 60000;
+
+    cars = new ArrayList<Car>();
+
+    for (int y = 0; y < board.length; y++)
+    {
+      for (int x = 0; x < board[y].length; x++)
+      {
+        if (board[y][x] != 0)
+        {
+          boolean willAdd = true;
+          for (Car c : cars) {
+            if (c.getId() == board[y][x] )
+            {
+              c.addBlock(x, y);
+              willAdd = false;
+            }
+          }
+          if (willAdd)
+          {
+            cars.add(new Car(board[y][x], x, y));
+          }
+        }
+      }
+    }
+  } else if (!hasLost)
+  {
+    for (Car c : cars)
+    {
+      if (c.selectCar(mouseX, mouseY, boardWidth))
+      {
+        if (!c.equals(mySelectedCar))
+        {
+          if (mySelectedCar != null) mySelectedCar.setColor(color(red(mySelectedCar.getColor())-50, blue(mySelectedCar.getColor())-50, green(mySelectedCar.getColor())-50));
+          int col = color(red(c.getColor())+50, blue(c.getColor())+50, green(c.getColor())+50);
+          c.setColor(col);
+          mySelectedCar = c;
+        }
+      }
+    }
+  }
 }
 
-
+void mouseDragged()
+{
+  if (!hasLost)
+  {
+    mySelectedCar.moveCar(mouseX, mouseY, boardWidth, cars);
+  }
+}
 
 void drawPerson(float personX, float personY, float scaleF) {
   noStroke();
@@ -864,15 +1038,15 @@ void draw() {
 
     //whole person animation
     if (personXEnd > 250 && personYEnd != 750) {
-      personXEnd--;
+      personXEnd-= 3;
     }
 
     if (personXEnd == 250 && personYEnd < 750) {
-      personYEnd += 0.5;
+      personYEnd += 1;
     }
 
     if (personYEnd == 750) {
-      personXEnd++;
+      personXEnd+=3;
     }
 
     if (personXEnd > 800) {
@@ -907,7 +1081,7 @@ void draw() {
 
 
   //THIS IS THE CODE FOR SCENE 3, DRIVING SCENE
-  if (scene3Start == true) {
+  if (scene3Start == true && scene4Start == false) {
     background(100, 100, 20);
     fill(50);
     rect(50, 0, width-100, height);
@@ -935,13 +1109,13 @@ void draw() {
 
     println(carVelocityY[0]);
     Car1(100+carVelocityX[0], carFinalY[0]);
-    Car2(325-carVelocityX[1], carFinalY[1]);
-    Bus(500+carVelocityX[2], carFinalY[2]);
-    
-    
+    Car2(400-carVelocityX[1], carFinalY[1]);
+    Bus(700+carVelocityX[2], carFinalY[2]);
+
+
     fill(0, 100);
     rect(0, height*.8, width, height*.2);
-    
+
     fill(255);
     textSize(25);
     textAlign(CENTER);
@@ -951,14 +1125,137 @@ void draw() {
       } else {
         if (dialogue2[1] == false) {
           text(" 'Help me get through it on time!' ", width/2, height*.93);
-        } 
+        }
       }
     }
     //if(scene3Done == true) {
     //  println("scene 3 is done");
     //}
-    
-    
+  }
+
+  //THIS IS THE CODE FOR SCENE 4, ACTUAL GAME
+  if (scene4Start == true) {
+    background(150);
+    noStroke();
+
+    if (anim > 20)
+    {
+      fill(0);
+      if (anim > 40) anim = 0;
+    } else
+      fill(255);
+    anim++;
+    rect(5*boardWidth+boardWidth/8, 2*boardWidth+boardWidth/2.5, 70, 25);
+    triangle(5*boardWidth+75, 2*boardWidth+91, 5*boardWidth+116, 2*boardWidth+66, 5*boardWidth+75, 2*boardWidth+40);
+
+    stroke(0);
+    strokeWeight(5);
+    for (int y = 0; y < board.length; y++)
+    {
+      for (int x = 0; x < board[y].length; x++)
+      {
+        line(x * boardWidth, 0, x*boardWidth, 800);
+        line(0, y*boardWidth, 800, y*boardWidth);
+      }
+    }
+    line(800, 0, 800, 800);
+
+
+    if (hasLost)
+    {
+      Car nD = cars.get((int)random(0, cars.size())); 
+
+      if (nD.canGoHorizontal)
+      {
+
+        boolean willUpdate = true;
+        for (Car c : cars)
+        {
+          if (c.canGoHorizontal && !c.equals(nD))
+          {
+            if (c.getFirstX()*boardWidth+c.animShift <= nD.getLastX()*boardWidth+nD.animShift+boardWidth && c.getLastX()*boardWidth+c.animShift >= nD.getFirstX()*boardWidth+nD.animShift && c.getFirstY() == nD.getFirstY())
+            {
+              willUpdate  = false;
+            }
+          } else if (c.canGoVertical && !c.equals(nD))
+          {
+            if (c.getFirstX()*boardWidth <= nD.getLastX()*boardWidth+nD.animShift+boardWidth && c.getLastX()*boardWidth > nD.getLastX()*boardWidth+nD.animShift && 
+              ((nD.getFirstY()*boardWidth <= c.getLastY()*boardWidth+c.animShift) && (nD.getFirstY()*boardWidth + boardWidth >= c.getFirstY()*boardWidth+c.animShift)))
+            { 
+              willUpdate = false;
+            }
+          }
+        }
+
+        if (willUpdate)
+        {
+          nD.setAnimShift(nD.getAnimShift()+5);
+        }
+        if (nD.getAnimShift() >= boardWidth)
+        {
+          nD.setAnimShift(0);
+          for (int i = 0; i < nD.myXBlocks.size(); i++)
+          {
+            nD.myXBlocks.set(i, nD.myXBlocks.get(i)+1);
+          }
+        }
+      } else
+      {
+
+        boolean willUpdate = true;
+        for (Car c : cars)
+        {
+          if (c.canGoHorizontal && !c.equals(nD))
+          {
+            if (c.getFirstY()*boardWidth <= nD.getLastY()*boardWidth+nD.animShift+boardWidth && c.getLastY()*boardWidth > nD.getLastY()*boardWidth+nD.animShift && 
+              ((nD.getFirstX()*boardWidth <= c.getLastX()*boardWidth+c.animShift) && (nD.getFirstX()*boardWidth + boardWidth >= c.getFirstX()*boardWidth+c.animShift)))
+            {
+              willUpdate = false;
+            }
+          } else if (c.canGoVertical && !c.equals(nD))
+          {
+            if (c.getFirstY()*boardWidth+c.animShift <= nD.getLastY()*boardWidth+nD.animShift+boardWidth && c.getLastY()*boardWidth+c.animShift >= nD.getFirstY()*boardWidth+nD.animShift && c.getFirstX() == nD.getFirstX())
+            { 
+              willUpdate = false;
+            }
+          }
+        }
+
+        if (willUpdate)
+        {
+          nD.setAnimShift(nD.getAnimShift()+5);
+        }
+        if (nD.getAnimShift() >= boardWidth)
+        {
+          nD.setAnimShift(0);
+          for (int i = 0; i < nD.myYBlocks.size(); i++)
+          {
+            nD.myYBlocks.set(i, nD.myYBlocks.get(i)+1);
+          }
+        }
+      }
+    }
+    //draw game
+    for (int y = 0; y < board.length; y++)
+    {
+      for (int x = 0; x < board[y].length; x++)
+      {
+        for (Car c : cars)
+        {
+          if (c.getId() == board[y][x] && !c.getDrawn())
+          {
+
+            fill(c.getColor());
+            if (c.canGoHorizontal)
+              rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+            else
+              rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+
+            c.toggleDrawn(true);
+          }
+        }
+      }
+    }
   }
 
 
@@ -980,6 +1277,28 @@ void draw() {
       } else {
         opac -=0;
         trans2Done = true;
+      }
+    }
+  }
+
+  if (scene3Done == true) {
+    fill(0, opac);
+    rect(0, 0, width, height);
+    if (scene4Start == false) {
+      if (opac < 255) {
+        opac += 2;
+      } else {
+        opac += 0;
+        scene4Start = true;
+        trans3Done = false;
+      }
+    }
+    if (scene4Start == true && trans3Done == false) {
+      if (opac > 0) {
+        opac -= 2;
+      } else {
+        opac -=0;
+        trans3Done = true;
       }
     }
   }
