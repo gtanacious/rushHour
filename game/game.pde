@@ -10,10 +10,13 @@ int levelNumber;
 int shift;
 int timer;
 float textAnim;
-
+color[] carColor = new color[10];
 
 void setup()
 {
+  for (int i = 0; i < carColor.length; i++) {
+    carColor[i] = color(random(0, 255), random(0, 255), random(0, 255));
+  }
   level = new ArrayList<int[][]>();
 
   int[][] board1 =  {
@@ -203,9 +206,12 @@ void draw()
         {
 
           fill(c.getColor());
-          if (c.canGoHorizontal)
+          if (c.canGoHorizontal && c.getId() != 1) {
             rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
-          else
+          }
+          if (c.getId() == 1) {
+            c.car1(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true);
+          } else
             rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
 
           c.toggleDrawn(true);
@@ -233,7 +239,7 @@ void draw()
   textFont(createFont("Times", 80, true), 30);
   text("Time Left:", 900, 100);
   if (((timeLeft/1000)%60) < 10)
-    text(timeLeft/60000 + ":0" + (timeLeft/1000)%60+"", 900, 200);
+  text(timeLeft/60000 + ":0" + (timeLeft/1000)%60+"", 900, 200);
   else
     text(timeLeft/60000 + ":" + (timeLeft/1000)%60+"", 900, 200);
 
