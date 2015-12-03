@@ -505,35 +505,41 @@ void mousePressed() {
     if (hasWon)
     {    
       levelNumber++;
-      board = level.get(levelNumber);  
-      hasWon = false;
-      anim = 0;
-      textAnim = 0;
-
-      timer = millis() + 60000 + (60000 * levelNumber);
-
-      cars = new ArrayList<Car>();
-
-      for (int y = 0; y < board.length; y++)
+      if (levelNumber < level.size())
       {
-        for (int x = 0; x < board[y].length; x++)
+        board = level.get(levelNumber);  
+        hasWon = false;
+        anim = 0;
+        textAnim = 0;
+
+        timer = millis() + 60000 + (60000 * levelNumber);
+
+        cars = new ArrayList<Car>();
+
+        for (int y = 0; y < board.length; y++)
         {
-          if (board[y][x] != 0)
+          for (int x = 0; x < board[y].length; x++)
           {
-            boolean willAdd = true;
-            for (Car c : cars) {
-              if (c.getId() == board[y][x] )
-              {
-                c.addBlock(x, y);
-                willAdd = false;
-              }
-            }
-            if (willAdd)
+            if (board[y][x] != 0)
             {
-              cars.add(new Car(board[y][x], x, y));
+              boolean willAdd = true;
+              for (Car c : cars) {
+                if (c.getId() == board[y][x] )
+                {
+                  c.addBlock(x, y);
+                  willAdd = false;
+                }
+              }
+              if (willAdd)
+              {
+                cars.add(new Car(board[y][x], x, y));
+              }
             }
           }
         }
+      } else
+      {
+        //do something to switch to the last scene. WIN CONDITION
       }
     } else if (hasLost)
     {
