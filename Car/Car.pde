@@ -6,57 +6,57 @@ void setup() {
 void draw() {
   //Car1();
   //Car2();
-  Bus();
-  //Truck();
+  //Bus();
+  Truck();
 }
 
 /*void car1(int x, int y, boolean direction) {
-  //begin tires
-  pushMatrix();
-  //translate(x,y);
-  translate(x + boardWidth, y + 2*boardWidth);
-  if (direction){
-    rotate(-PI/2);
-  }
-  scale(0.8);
-  rotate(PI);
-  translate(8,0);
-  fill(0);
-  rect(-5, 40, 20, 40, 5, 0, 0, 5);
-  rect(135, 40, 20, 40, 0, 5, 5, 0);
-  rect(-5, 220, 20, 40, 5, 0, 0, 5);
-  rect(135, 220, 20, 40, 0, 5, 5, 0);
-  //end tires
-  fill(41, 37, 38);
-  //fill(random(0,255), random(0,255), random(0,255));
-  rect(0, 0, 150, 300, 75, 75, 10, 10); //body
-  fill(201, 82, 16); //stripe color
-  //quad(90, 53, 110,
-  rect(40, 2, 20, 298, 25, 0, 0, 0); //left stripe
-  rect(90, 2, 20, 298, 0, 25, 0, 0); // right stripe
-  fill(54, 52, 53);
-  pushMatrix();
-  translate(0, 20);
-  quad(5, 50, 145, 50, 130, 100, 20, 100); // windshield
-  popMatrix();
-  quad(10, 220, 140, 220, 130, 250, 20, 250);
-  fill(233, 232, 230);
-  //begin lights
-  pushMatrix();
-  translate(16, 16);
-  rotate(-PI/8);
-  rect(0, 0, 20, 8, 2, 2, 2, 2);
-  popMatrix();
-  pushMatrix();
-  translate(120, 10);
-  rotate(PI/8);
-  rect(0, 0, 20, 8, 2, 2, 2, 2);
-  popMatrix();
-  popMatrix();
-  //end lights
-  //fill()
-}
-*/
+ //begin tires
+ pushMatrix();
+ //translate(x,y);
+ translate(x + boardWidth, y + 2*boardWidth);
+ if (direction){
+ rotate(-PI/2);
+ }
+ scale(0.8);
+ rotate(PI);
+ translate(8,0);
+ fill(0);
+ rect(-5, 40, 20, 40, 5, 0, 0, 5);
+ rect(135, 40, 20, 40, 0, 5, 5, 0);
+ rect(-5, 220, 20, 40, 5, 0, 0, 5);
+ rect(135, 220, 20, 40, 0, 5, 5, 0);
+ //end tires
+ fill(41, 37, 38);
+ //fill(random(0,255), random(0,255), random(0,255));
+ rect(0, 0, 150, 300, 75, 75, 10, 10); //body
+ fill(201, 82, 16); //stripe color
+ //quad(90, 53, 110,
+ rect(40, 2, 20, 298, 25, 0, 0, 0); //left stripe
+ rect(90, 2, 20, 298, 0, 25, 0, 0); // right stripe
+ fill(54, 52, 53);
+ pushMatrix();
+ translate(0, 20);
+ quad(5, 50, 145, 50, 130, 100, 20, 100); // windshield
+ popMatrix();
+ quad(10, 220, 140, 220, 130, 250, 20, 250);
+ fill(233, 232, 230);
+ //begin lights
+ pushMatrix();
+ translate(16, 16);
+ rotate(-PI/8);
+ rect(0, 0, 20, 8, 2, 2, 2, 2);
+ popMatrix();
+ pushMatrix();
+ translate(120, 10);
+ rotate(PI/8);
+ rect(0, 0, 20, 8, 2, 2, 2, 2);
+ popMatrix();
+ popMatrix();
+ //end lights
+ //fill()
+ }
+ */
 
 /*void Car2() {
  //begin tires
@@ -122,7 +122,7 @@ void Car2() {
 
 void Bus() {
   pushMatrix();
-  translate(50,50);
+  translate(50, 50);
   fill(0);
   rect(-5, 40, 20, 40, 5, 0, 0, 5);
   rect(135, 40, 20, 40, 0, 5, 5, 0);
@@ -156,13 +156,29 @@ void Bus() {
 }
 
 void Truck() {
+  pushMatrix();
+  translate(50, 50);
   fill(0);
-  rect(45, 90, 20, 40, 5, 0, 0, 5);
-  rect(185, 90, 20, 40, 0, 5, 5, 0);
-  rect(45, 420, 20, 40, 5, 0, 0, 5);
-  rect(185, 420, 20, 40, 0, 5, 5, 0);
+  rect(-5, 40, 20, 40, 5, 0, 0, 5);
+  rect(135, 40, 20, 40, 0, 5, 5, 0);
+  rect(-5, 370, 20, 40, 5, 0, 0, 5);
+  rect(135, 370, 20, 40, 0, 5, 5, 0);
   fill(63, 79, 232);
-  rect(55, 50, 140, 150, 20, 20, 5, 5);
+  rect(5, 0, 140, 150, 20, 20, 5, 5);
   fill(0, 75, 275);
-  rect(50, 200, 150, 300, 10, 10, 10, 10);
+  rect(0, 150, 150, 300, 10, 10, 10, 10);
+  //begin lights
+  fill(236, 253, 170);
+  pushMatrix();
+  translate(70, 51);
+  rect(-50, -50, 20, 8, 2, 2, 2, 2);
+  popMatrix();
+  pushMatrix();
+  translate(160, 51);
+  rect(-50, -50, 20, 8, 2, 2, 2, 2);
+  popMatrix();
+  fill(54, 52, 53);
+  quad(15, 35, 135, 35, 130, 50, 20, 50);
+  //end lights
+  popMatrix();
 }
