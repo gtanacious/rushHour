@@ -7,12 +7,20 @@ void draw() {
   //Car1();
   //Car2();
   Bus();
+  //Truck();
 }
 
-void Car1() {
+/*void car1(int x, int y, boolean direction) {
   //begin tires
   pushMatrix();
-  translate(50, 50);
+  //translate(x,y);
+  translate(x + boardWidth, y + 2*boardWidth);
+  if (direction){
+    rotate(-PI/2);
+  }
+  scale(0.8);
+  rotate(PI);
+  translate(8,0);
   fill(0);
   rect(-5, 40, 20, 40, 5, 0, 0, 5);
   rect(135, 40, 20, 40, 0, 5, 5, 0);
@@ -20,6 +28,7 @@ void Car1() {
   rect(135, 220, 20, 40, 0, 5, 5, 0);
   //end tires
   fill(41, 37, 38);
+  //fill(random(0,255), random(0,255), random(0,255));
   rect(0, 0, 150, 300, 75, 75, 10, 10); //body
   fill(201, 82, 16); //stripe color
   //quad(90, 53, 110,
@@ -47,6 +56,7 @@ void Car1() {
   //end lights
   //fill()
 }
+*/
 
 /*void Car2() {
  //begin tires
@@ -111,35 +121,38 @@ void Car2() {
 }
 
 void Bus() {
+  pushMatrix();
+  translate(50,50);
   fill(0);
-  rect(45, 90, 20, 40, 5, 0, 0, 5);
-  rect(185, 90, 20, 40, 0, 5, 5, 0);
-  rect(45, 420, 20, 40, 5, 0, 0, 5);
-  rect(185, 420, 20, 40, 0, 5, 5, 0);
+  rect(-5, 40, 20, 40, 5, 0, 0, 5);
+  rect(135, 40, 20, 40, 0, 5, 5, 0);
+  rect(-5, 370, 20, 40, 5, 0, 0, 5);
+  rect(135, 370, 20, 40, 0, 5, 5, 0);
   fill(255, 216, 0);
-  rect(50, 50, 150, 450, 20, 20, 10, 10);
+  rect(0, 0, 150, 450, 20, 20, 10, 10);
   fill(233, 232, 230);
   //begin lights
   pushMatrix();
   translate(70, 51);
-  rect(0, 0, 20, 8, 2, 2, 2, 2);
+  rect(-50, -50, 20, 8, 2, 2, 2, 2);
   popMatrix();
   pushMatrix();
   translate(160, 51);
-  rect(0, 0, 20, 8, 2, 2, 2, 2);
+  rect(-50, -50, 20, 8, 2, 2, 2, 2);
   popMatrix();
   //end lights
   fill(54, 52, 53);
   //rect(65, 85, 120, 40);
-  quad(65, 85, 185, 85, 180, 110, 70, 110);
-  quad(70, 480, 180, 480, 185, 490, 65, 490);
+  quad(15, 35, 135, 35, 130, 60, 20, 60);
+  quad(20, 430, 130, 430, 135, 440, 15, 440);
   fill(255, 0, 0);
-  rect(70, 498, 10, 3);
-  rect(170, 498, 10, 3);
+  rect(20, 448, 10, 3);
+  rect(120, 448, 10, 3);
   //stroke(246, 239, 119);
-  line(70, 140, 70, 440);
-  line(180, 140, 180, 440);
-  line(125, 140, 125, 440);
+  line(20, 90, 20, 390);
+  line(130, 90, 130, 390);
+  line(75, 90, 75, 390);
+  popMatrix();
 }
 
 void Truck() {
