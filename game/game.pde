@@ -355,7 +355,7 @@ void mousePressed()
 
 void mouseDragged()
 {
-  if (!hasLost)
+  if (!hasLost && mySelectedCar != null)
   {
     mySelectedCar.moveCar(mouseX, mouseY, boardWidth, cars);
   }

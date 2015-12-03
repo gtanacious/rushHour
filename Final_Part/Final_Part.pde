@@ -25,8 +25,8 @@ float personYEnd = 673;
 
 int numDialogue1 = 3;
 int numDialogue2 = 2;
-int i = 0;
-int k = 0;
+int i_diag = 0;
+int k_diag = 0;
 boolean[] dialogue1 = new boolean[numDialogue1];
 boolean[] dialogue2 = new boolean[numDialogue2];
 
@@ -495,118 +495,121 @@ void setup() {
     }
   }
 
-  timer = 60000;
+  timer = 0;
 }
 
 
 void mousePressed() {
+  if (scene4Start)
+  {
+    if (hasWon)
+    {    
+      levelNumber++;
+      board = level.get(levelNumber);  
+      hasWon = false;
+      anim = 0;
+      textAnim = 0;
+
+      timer = millis() + 60000 + (60000 * levelNumber);
+
+      cars = new ArrayList<Car>();
+
+      for (int y = 0; y < board.length; y++)
+      {
+        for (int x = 0; x < board[y].length; x++)
+        {
+          if (board[y][x] != 0)
+          {
+            boolean willAdd = true;
+            for (Car c : cars) {
+              if (c.getId() == board[y][x] )
+              {
+                c.addBlock(x, y);
+                willAdd = false;
+              }
+            }
+            if (willAdd)
+            {
+              cars.add(new Car(board[y][x], x, y));
+            }
+          }
+        }
+      }
+    } else if (hasLost)
+    {
+      levelNumber = 0;
+      board = level.get(levelNumber);  
+      hasWon = false;
+      hasLost = false;
+      anim = 0;
+      textAnim = 0;
+      timer = millis() + 60000;
+
+      cars = new ArrayList<Car>();
+
+      for (int y = 0; y < board.length; y++)
+      {
+        for (int x = 0; x < board[y].length; x++)
+        {
+          if (board[y][x] != 0)
+          {
+            boolean willAdd = true;
+            for (Car c : cars) {
+              if (c.getId() == board[y][x] )
+              {
+                c.addBlock(x, y);
+                willAdd = false;
+              }
+            }
+            if (willAdd)
+            {
+              cars.add(new Car(board[y][x], x, y));
+            }
+          }
+        }
+      }
+    } else if (!hasLost)
+    {
+      for (Car c : cars)
+      {
+        if (c.selectCar(mouseX, mouseY, boardWidth))
+        {
+          if (!c.equals(mySelectedCar))
+          {
+            if (mySelectedCar != null) mySelectedCar.setColor(color(red(mySelectedCar.getColor())-50, blue(mySelectedCar.getColor())-50, green(mySelectedCar.getColor())-50));
+            int col = color(red(c.getColor())+50, blue(c.getColor())+50, green(c.getColor())+50);
+            c.setColor(col);
+            mySelectedCar = c;
+          }
+        }
+      }
+    }
+  }
+
   if (mouseX < width && mouseX > 0 && mouseY > 0 && mouseY < height*.2) {
-    dialogue1[i] = true;
+    dialogue1[i_diag] = true;
     if (dialogue1[2] == true) {
       scene1Done = true;
     }
-    if (i < 2) {
-      i++;
+    if (i_diag < 2) {
+      i_diag++;
     }
   }
 
   if (scene3Start == true && mouseX < width && mouseX > 0 && mouseY > height*.8 && mouseY < height) {
-    dialogue2[k] = true;
+    dialogue2[k_diag] = true;
     if (dialogue2[1] == true) {
       scene3Done = true;
     }
-    if (k < 1) {
-      k++;
-    }
-  }
-
-  if (hasWon)
-  {    
-    levelNumber++;
-    board = level.get(levelNumber);  
-    hasWon = false;
-    anim = 0;
-    textAnim = 0;
-
-    timer = millis() + 60000 + (60000 * levelNumber);
-
-    cars = new ArrayList<Car>();
-
-    for (int y = 0; y < board.length; y++)
-    {
-      for (int x = 0; x < board[y].length; x++)
-      {
-        if (board[y][x] != 0)
-        {
-          boolean willAdd = true;
-          for (Car c : cars) {
-            if (c.getId() == board[y][x] )
-            {
-              c.addBlock(x, y);
-              willAdd = false;
-            }
-          }
-          if (willAdd)
-          {
-            cars.add(new Car(board[y][x], x, y));
-          }
-        }
-      }
-    }
-  } else if (hasLost)
-  {
-    levelNumber = 0;
-    board = level.get(levelNumber);  
-    hasWon = false;
-    hasLost = false;
-    anim = 0;
-    textAnim = 0;
-    timer = millis() + 60000;
-
-    cars = new ArrayList<Car>();
-
-    for (int y = 0; y < board.length; y++)
-    {
-      for (int x = 0; x < board[y].length; x++)
-      {
-        if (board[y][x] != 0)
-        {
-          boolean willAdd = true;
-          for (Car c : cars) {
-            if (c.getId() == board[y][x] )
-            {
-              c.addBlock(x, y);
-              willAdd = false;
-            }
-          }
-          if (willAdd)
-          {
-            cars.add(new Car(board[y][x], x, y));
-          }
-        }
-      }
-    }
-  } else if (!hasLost)
-  {
-    for (Car c : cars)
-    {
-      if (c.selectCar(mouseX, mouseY, boardWidth))
-      {
-        if (!c.equals(mySelectedCar))
-        {
-          if (mySelectedCar != null) mySelectedCar.setColor(color(red(mySelectedCar.getColor())-50, blue(mySelectedCar.getColor())-50, green(mySelectedCar.getColor())-50));
-          int col = color(red(c.getColor())+50, blue(c.getColor())+50, green(c.getColor())+50);
-          c.setColor(col);
-          mySelectedCar = c;
-        }
-      }
+    if (k_diag < 1) {
+      k_diag++;
     }
   }
 }
 
 void mouseDragged()
 {
-  if (!hasLost)
+  if (!hasLost && scene4Start && mySelectedCar != null)
   {
     mySelectedCar.moveCar(mouseX, mouseY, boardWidth, cars);
   }
@@ -1244,7 +1247,6 @@ void draw() {
         {
           if (c.getId() == board[y][x] && !c.getDrawn())
           {
-
             fill(c.getColor());
             if (c.canGoHorizontal)
               rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
@@ -1256,8 +1258,58 @@ void draw() {
         }
       }
     }
-  }
 
+    int timeLeft = 0;
+    if ((timer - millis() <= 0))
+    {
+      timeLeft = 0;
+      hasLost = true;
+      shift++;
+    } else if (!hasWon)
+    {
+      timeLeft =  timer - millis();
+    }
+    fill(200);
+    rect(800, 0, 200, 800);
+
+    fill(0);
+    textAlign(CENTER);
+    textFont(createFont("Times", 80, true), 30);
+    text("Time Left:", 900, 100);
+    if (((timeLeft/1000)%60) < 10)
+      text(timeLeft/60000 + ":0" + (timeLeft/1000)%60+"", 900, 200);
+    else
+      text(timeLeft/60000 + ":" + (timeLeft/1000)%60+"", 900, 200);
+
+    //perform update tasks & checking of game
+    for (Car c : cars)
+    {
+      if (c.isTargetCar() && c.getLastX() == 5 && !hasLost)
+      {
+        textAnim+=1;
+        hasWon = true;
+        stroke(0, textAnim);
+        fill(230, (int)textAnim);
+        rect(200, 300, 400, 130);
+        fill(10, (int)textAnim);
+        textAlign(CENTER);
+        textFont(createFont("Times", 80, true), 80);
+        text("YOU WIN!", 400, 400);
+      }
+      if (hasLost)
+      {
+        textAnim+=0.1;
+        stroke(0, textAnim);
+        fill(230, (int)textAnim);
+        rect(200, 300, 400, 130);
+        fill(10, (int)textAnim);
+        textAlign(CENTER);
+        textFont(createFont("Times", 80, true), 80);
+        text("YOU LOST", 400, 400);
+      }
+      c.toggleDrawn(false);
+    }
+  }
 
   if (scene2Done == true) {
     fill(0, opac);
@@ -1290,6 +1342,7 @@ void draw() {
       } else {
         opac += 0;
         scene4Start = true;
+        timer = millis() + 60000;
         trans3Done = false;
       }
     }

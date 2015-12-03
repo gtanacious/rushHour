@@ -28,7 +28,7 @@ public class Car
     hasDrawn = false;
     canGoHorizontal = false;
     canGoVertical = false;
-    
+
     animShift = 0;
 
     //carColor = color(random(50, 150), random(50, 150), random(50, 150));
@@ -278,14 +278,14 @@ public class Car
   {
     return canGoHorizontal;
   }
-  
+
   public void setAnimShift(int setVal)
   {
-     animShift = setVal; 
+    animShift = setVal;
   }
-  
+
   public int getAnimShift()
   {
-     return animShift; 
+    return animShift;
   }
 }
