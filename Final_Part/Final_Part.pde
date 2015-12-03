@@ -11,6 +11,8 @@ float LarmR;
 float RarmR;
 float LfarmR;
 float RfarmR;
+float LlegH;
+float RlegH;
 float tx;
 float opac;
 
@@ -26,6 +28,12 @@ boolean scene1Done, scene2Start, trans1Done;
 boolean waveF;
 boolean scratch;
 boolean pupilLeft;
+boolean LlegFor;
+boolean RlegFor;
+boolean LlegUp;
+boolean RlegUp;
+boolean runR;
+boolean runL;
 
 void rightFence() {
   //right fence
@@ -87,16 +95,16 @@ void homeBuilding(float homePositionX, float homePositionY) {
   line(295, -195, 295, -40);
   //right fence
   /*strokeWeight(5);
-  stroke(255);
-  line(190, -100, 190, -43);
-  line(187.5, -100, 192.5, -100);
-  strokeWeight(3);
-  line(190, -95, 295, -95);
-  line(190, -47, 295, -47);
-  strokeWeight(2);
-  for (int i = 0; i < 10; i++) {
-    line(200 + i*10, -95, 200 + i*10, -47);
-  }*/
+   stroke(255);
+   line(190, -100, 190, -43);
+   line(187.5, -100, 192.5, -100);
+   strokeWeight(3);
+   line(190, -95, 295, -95);
+   line(190, -47, 295, -47);
+   strokeWeight(2);
+   for (int i = 0; i < 10; i++) {
+   line(200 + i*10, -95, 200 + i*10, -47);
+   }*/
   //left fence
   strokeWeight(5);
   stroke(255);
@@ -211,6 +219,8 @@ void setup() {
   RarmR = radians(-135);
   LfarmR = radians(30);
   RfarmR = radians(-100);
+  LlegH = 80;
+  RlegH = 80;
   tx = 0;
 
   for (int j=0; j<numDialogue; j++) {
@@ -222,6 +232,12 @@ void setup() {
   scene1Done = false;
   scene2Start = false;
   trans1Done = false;
+  LlegFor = true;
+  RlegFor = false;
+  LlegUp = false;
+  RlegUp = true;
+  runR = false;
+  runL = true;
   opac = 0;
 
   img1 = loadImage("Lab8.jpg");
@@ -257,21 +273,23 @@ void drawPerson(float personX, float personY, float scaleF) {
   scale(scaleF);
   //Left leg
   pushMatrix();
-  translate(-60, 72.5);
-  translate(-22.5, 30);
+  translate(-55, LlegH);
+  translate(30, 0);
   rotate(LlegR);
-  translate(22.5, -30);
+  translate(-30, 0);
   fill(12, 34, 56);
+  arc(30, 0, 60, 60, -1*PI, 0);
   rect(0, 0, 60, 200);
   popMatrix();
 
   //Right leg
   pushMatrix();
-  translate(0, 90);
-  translate(-22, 30);
+  translate(-5, RlegH);
+  translate(30, 0);
   rotate(RlegR);
-  translate(22, -30);
+  translate(-30, 0);
   fill(12, 34, 56);
+  arc(30, 0, 60, 60, -1*PI, 0);
   rect(0, 0, 60, 200);
   popMatrix();
 
@@ -520,32 +538,158 @@ void draw() {
       drawPerson(personXEnd, personYEnd, 0.3);
     }
 
+    //leg animation both directions
+
+    if (personXEnd > 250 && personYEnd == 673) {
+      if (LlegR > radians(10)) {
+        LlegFor = true;
+      }
+      if (LlegR < radians(-10)) {
+        LlegFor = false;
+      }
+
+      if (LlegFor == true) {
+        LlegR -= radians(1);
+      } else {
+        LlegR += radians(1);
+      }
+
+      if (RlegR > radians(10)) {
+        RlegFor = true;
+      }
+      if (RlegR < radians(-10)) {
+        RlegFor = false;
+      }
+
+      if (RlegFor == true) {
+        RlegR -= radians(1);
+      } else {
+        RlegR += radians(1);
+      }
+    }
+
+    if (personXEnd == 250 && personYEnd > 673 && personYEnd < 750) {
+      if (LlegH < 70) {
+        LlegUp = true;
+      }
+      if (LlegH > 90) {
+        LlegUp = false;
+      }
+
+      if (LlegUp) {
+        LlegH += 2;
+      } else {
+        LlegH -= 2;
+      }
+
+      if (RlegH < 70) {
+        RlegUp = true;
+      }
+      if (RlegH > 90) {
+        RlegUp = false;
+      }
+
+      if (RlegUp) {
+        RlegH += 2;
+      } else {
+        RlegH -= 2;
+      }
+    }
+
+    if (personYEnd == 750) {
+      if (LlegR > radians(10)) {
+        LlegFor = true;
+      }
+      if (LlegR < radians(-10)) {
+        LlegFor = false;
+      }
+
+      if (LlegFor == true) {
+        LlegR -= radians(1);
+      } else {
+        LlegR += radians(1);
+      }
+
+      if (RlegR > radians(10)) {
+        RlegFor = true;
+      }
+      if (RlegR < radians(-10)) {
+        RlegFor = false;
+      }
+
+      if (RlegFor == true) {
+        RlegR -= radians(1);
+      } else {
+        RlegR += radians(1);
+      }
+    }
+
     //arm animation
-    if (LfarmR > radians(90)) {
-      waveF = true;
+    RarmR = -LarmR;
+
+    if (LarmR > radians(75)) {
+      runL = true;
     }
-    if (LfarmR < radians(10)) {
-      waveF = false;
+    if (LarmR < radians(0) ) {
+      runL = false;
     }
 
-    if (waveF == true) {
-      LfarmR -= radians(2);
+    if (runL) {
+      LarmR -= radians(2);
     } else {
-      LfarmR += radians(2);
+      LarmR += radians(2);
     }
 
-    if (RfarmR > radians(-100)) {
-      scratch = true;
+    if (RarmR > radians(75)) {
+      runR = true;
     }
-    if (RfarmR < radians(-150)) {
-      scratch = false;
+    if (RarmR < radians(0) ) {
+      runR = false;
     }
 
-    if (scratch == true) {
-      RfarmR -= radians(1);
+    if (runR) {
+      RarmR -= radians(2);
     } else {
-      RfarmR += radians(1);
+      RarmR += radians(2);
     }
+
+    if (personYEnd == 673) {
+      LfarmR = -80;
+      RfarmR = -80;
+    }
+    if (personYEnd > 673 && personYEnd < 750 && personXEnd == 250) {
+      LfarmR = radians(-150);
+      RfarmR = radians(150);
+    }
+    if(personYEnd == 750) {
+      LfarmR = 80;
+      RfarmR = 80;
+    }
+    //if (LfarmR > radians(90)) {
+    //  waveF = true;
+    //}
+    //if (LfarmR < radians(10)) {
+    //  waveF = false;
+    //}
+
+    //if (waveF == true) {
+    //  LfarmR -= radians(2);
+    //} else {
+    //  LfarmR += radians(2);
+    //}
+
+    //if (RfarmR > radians(-100)) {
+    //  scratch = true;
+    //}
+    //if (RfarmR < radians(-150)) {
+    //  scratch = false;
+    //}
+
+    //if (scratch == true) {
+    //  RfarmR -= radians(1);
+    //} else {
+    //  RfarmR += radians(1);
+    //}
 
     //eye animation
     if (tx < -6) {
@@ -577,24 +721,24 @@ void draw() {
 
 
 
-if (scene1Done == true) {
-  fill(0, opac);
-  rect(0, 0, width, height);
-  if (scene2Start == false) {
-    if (opac < 255) {
-      opac += 2;
-    } else {
-      opac += 0;
-      scene2Start = true;
+  if (scene1Done == true) {
+    fill(0, opac);
+    rect(0, 0, width, height);
+    if (scene2Start == false) {
+      if (opac < 255) {
+        opac += 2;
+      } else {
+        opac += 0;
+        scene2Start = true;
+      }
+    }
+    if (scene2Start == true && trans1Done == false) {
+      if (opac > 0) {
+        opac -= 2;
+      } else {
+        opac -=0;
+        trans1Done = true;
+      }
     }
   }
-  if (scene2Start == true && trans1Done == false) {
-    if (opac > 0) {
-      opac -= 2;
-    } else {
-      opac -=0;
-      trans1Done = true;
-    }
-  }
-}
 }
