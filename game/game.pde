@@ -9,6 +9,7 @@ int[][] board;
 int levelNumber;
 int shift;
 int timer;
+float textAnim;
 
 
 void setup()
@@ -16,12 +17,12 @@ void setup()
   level = new ArrayList<int[][]>();
 
   int[][] board1 =  {
-    {0, 0, 0, 4, 0, 0}, 
-    {0, 0, 0, 4, 0, 0}, 
-    {0, 0, 0, 0, 0, 0}, 
-    {0, 0, 0, 0, 0, 0}, 
-    {1, 1, 0, 0, 0, 0}, 
-    {0, 0, 0, 0, 0, 0}
+    {0, 0, 0, 2, 0, 0}, 
+    {4, 4, 0, 2, 0, 0}, 
+    {0, 1, 1, 2, 0, 0}, 
+    {5, 3, 3, 3, 0, 0}, 
+    {5, 0, 0, 0, 0, 0}, 
+    {5, 0, 0, 0, 0, 0}
   };
   level.add(board1);
   int[][] board2 =  {
@@ -60,6 +61,7 @@ void setup()
   hasLost = hasWon = false;
   anim = 0;
   shift = 0;
+  textAnim = 0;
 
   cars = new ArrayList<Car>();
 
@@ -84,12 +86,8 @@ void setup()
       }
     }
   }
-  
-  for(Car c: cars)
-  {
-    c.calculateBounds(boardWidth); 
-  }
-  timer = 0;//60000;
+
+  timer = 60000;
 }
 
 void draw()
@@ -119,6 +117,81 @@ void draw()
   }
   line(800, 0, 800, 800);
 
+
+  if (hasLost)
+  {
+    Car nD = cars.get((int)random(0, cars.size())); 
+
+    if (nD.canGoHorizontal)
+    {
+
+      boolean willUpdate = true;
+      for (Car c : cars)
+      {
+        if (c.canGoHorizontal && !c.equals(nD))
+        {
+          if (c.getFirstX()*boardWidth+c.animShift <= nD.getLastX()*boardWidth+nD.animShift+boardWidth && c.getLastX()*boardWidth+c.animShift >= nD.getFirstX()*boardWidth+nD.animShift && c.getFirstY() == nD.getFirstY())
+          {
+            willUpdate  = false;
+          }
+        } else if (c.canGoVertical && !c.equals(nD))
+        {
+          if (c.getFirstX()*boardWidth <= nD.getLastX()*boardWidth+nD.animShift+boardWidth && c.getLastX()*boardWidth > nD.getLastX()*boardWidth+nD.animShift && 
+            ((nD.getFirstY()*boardWidth <= c.getLastY()*boardWidth+c.animShift) && (nD.getFirstY()*boardWidth + boardWidth >= c.getFirstY()*boardWidth+c.animShift)))
+          { 
+            willUpdate = false;
+          }
+        }
+      }
+
+      if (willUpdate)
+      {
+        nD.setAnimShift(nD.getAnimShift()+5);
+      }
+      if (nD.getAnimShift() >= boardWidth)
+      {
+        nD.setAnimShift(0);
+        for (int i = 0; i < nD.myXBlocks.size(); i++)
+        {
+          nD.myXBlocks.set(i, nD.myXBlocks.get(i)+1);
+        }
+      }
+    } else
+    {
+
+      boolean willUpdate = true;
+      for (Car c : cars)
+      {
+        if (c.canGoHorizontal && !c.equals(nD))
+        {
+          if (c.getFirstY()*boardWidth <= nD.getLastY()*boardWidth+nD.animShift+boardWidth && c.getLastY()*boardWidth > nD.getLastY()*boardWidth+nD.animShift && 
+            ((nD.getFirstX()*boardWidth <= c.getLastX()*boardWidth+c.animShift) && (nD.getFirstX()*boardWidth + boardWidth >= c.getFirstX()*boardWidth+c.animShift)))
+          {
+            willUpdate = false;
+          }
+        } else if (c.canGoVertical && !c.equals(nD))
+        {
+          if (c.getFirstY()*boardWidth+c.animShift <= nD.getLastY()*boardWidth+nD.animShift+boardWidth && c.getLastY()*boardWidth+c.animShift >= nD.getFirstY()*boardWidth+nD.animShift && c.getFirstX() == nD.getFirstX())
+          { 
+            willUpdate = false;
+          }
+        }
+      }
+
+      if (willUpdate)
+      {
+        nD.setAnimShift(nD.getAnimShift()+5);
+      }
+      if (nD.getAnimShift() >= boardWidth)
+      {
+        nD.setAnimShift(0);
+        for (int i = 0; i < nD.myYBlocks.size(); i++)
+        {
+          nD.myYBlocks.set(i, nD.myYBlocks.get(i)+1);
+        }
+      }
+    }
+  }
   //draw game
   for (int y = 0; y < board.length; y++)
   {
@@ -128,58 +201,38 @@ void draw()
       {
         if (c.getId() == board[y][x] && !c.getDrawn())
         {
-          
+
           fill(c.getColor());
-          if(c.canGoVertical())
-          {
-            
-            for(Car d : cars)
-            {
-               if(!c.equals(d) && (d.yBounds.get(0).equals(c.yBounds.get(1))))
-               {
-                  println("collides");
-               }
-            }
-            c.yBounds.set(0, c.yBounds.get(0)+1);
-            c.yBounds.set(1, c.yBounds.get(1)+1);
-            rect(c.xBounds.get(0), c.yBounds.get(0), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
-            
-          }
-          else if (c.canGoHorizontal)
-          {
-             c.xBounds.set(0, c.xBounds.get(0)+1);
-             c.xBounds.set(1, c.xBounds.get(1)+1);
-             rect(c.xBounds.get(0), c.yBounds.get(0), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
-            
-          }
-          
-          
-           
+          if (c.canGoHorizontal)
+            rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+          else
+            rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+
           c.toggleDrawn(true);
         }
       }
     }
   }
 
+
   int timeLeft = 0;
-  if((timer - millis() <= 0))
+  if ((timer - millis() <= 0))
   {
     timeLeft = 0;
     hasLost = true;
     shift++;
-  }
-  else if(!hasWon)
+  } else if (!hasWon)
   {
     timeLeft =  timer - millis();
   }
   fill(200);
   rect(800, 0, 200, 800);
-  
+
   fill(0);
   textAlign(CENTER);
   textFont(createFont("Times", 80, true), 30);
   text("Time Left:", 900, 100);
-  if(((timeLeft/1000)%60) < 10)
+  if (((timeLeft/1000)%60) < 10)
     text(timeLeft/60000 + ":0" + (timeLeft/1000)%60+"", 900, 200);
   else
     text(timeLeft/60000 + ":" + (timeLeft/1000)%60+"", 900, 200);
@@ -187,15 +240,28 @@ void draw()
   //perform update tasks & checking of game
   for (Car c : cars)
   {
-    if (c.isTargetCar() && c.getLastX() == 5)
+    if (c.isTargetCar() && c.getLastX() == 5 && !hasLost)
     {
+      textAnim+=1;
       hasWon = true;
-      fill(230);
+      stroke(0, textAnim);
+      fill(230, (int)textAnim);
       rect(200, 300, 400, 130);
-      fill(10);
+      fill(10, (int)textAnim);
       textAlign(CENTER);
       textFont(createFont("Times", 80, true), 80);
       text("YOU WIN!", 400, 400);
+    }
+    if (hasLost)
+    {
+      textAnim+=0.1;
+      stroke(0, textAnim);
+      fill(230, (int)textAnim);
+      rect(200, 300, 400, 130);
+      fill(10, (int)textAnim);
+      textAlign(CENTER);
+      textFont(createFont("Times", 80, true), 80);
+      text("YOU LOST", 400, 400);
     }
     c.toggleDrawn(false);
   }
@@ -203,17 +269,18 @@ void draw()
 
 void mousePressed()
 {
-  if(hasWon)
+  if (hasWon)
   {    
     levelNumber++;
     board = level.get(levelNumber);  
     hasWon = false;
     anim = 0;
-  
+    textAnim = 0;
+
     timer = millis() + 60000 + (60000 * levelNumber);
-    
+
     cars = new ArrayList<Car>();
-  
+
     for (int y = 0; y < board.length; y++)
     {
       for (int x = 0; x < board[y].length; x++)
@@ -235,8 +302,40 @@ void mousePressed()
         }
       }
     }
-  }
-  else if(!hasLost)
+  } else if (hasLost)
+  {
+    levelNumber = 0;
+    board = level.get(levelNumber);  
+    hasWon = false;
+    hasLost = false;
+    anim = 0;
+    textAnim = 0;
+    timer = millis() + 60000;
+
+    cars = new ArrayList<Car>();
+
+    for (int y = 0; y < board.length; y++)
+    {
+      for (int x = 0; x < board[y].length; x++)
+      {
+        if (board[y][x] != 0)
+        {
+          boolean willAdd = true;
+          for (Car c : cars) {
+            if (c.getId() == board[y][x] )
+            {
+              c.addBlock(x, y);
+              willAdd = false;
+            }
+          }
+          if (willAdd)
+          {
+            cars.add(new Car(board[y][x], x, y));
+          }
+        }
+      }
+    }
+  } else if (!hasLost)
   {
     for (Car c : cars)
     {
@@ -256,7 +355,7 @@ void mousePressed()
 
 void mouseDragged()
 {
-  if(!hasLost)
+  if (!hasLost)
   {
     mySelectedCar.moveCar(mouseX, mouseY, boardWidth, cars);
   }
