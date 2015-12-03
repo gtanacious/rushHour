@@ -16,6 +16,9 @@ float RlegH;
 float tx;
 float opac;
 
+//soundCount
+int soundCount = 0;
+
 //movement variable
 float personXEnd = 343;
 float personYEnd = 673;
@@ -523,6 +526,11 @@ void draw() {
   } 
 
   if (scene2Start == true) {
+    
+    if (soundCount == 0) {
+      file.play();
+      soundCount++;
+    }
     background(139, 211, 255);
     fill(100);
     rect(0, 700, width, 100);

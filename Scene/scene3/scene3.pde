@@ -3,6 +3,15 @@
 //top down view of cars "driving" (lines of road are actually just moving downward
 float stripeX, stripeY;
 
+int stripeVel;
+PVector stripePos;
+float[] posY = new float[8];
+float[] posX1 = new float[8];
+float[] posX2 = new float[8];
+int[] carVelocityX = new int[3];
+int[] carVelocityY = new int[3];
+int[] carFinalY = new int[3];
+
 //first using Tanay's models for the cars from top down
 void Car1(float car1X, float car1Y) {
   //begin tires
@@ -111,52 +120,76 @@ void Bus(float busX, float busY) {
 //void roadStripes() {
 //}
 
-class roadStripes {
-  PVector stripeVel;
-  PVector stripePos;
-  float[] posY = new float[4];
-  float[] posX = new float[4];
-  roadStripes() {
-    stripeVel = new PVector(0, -50);
-    for (int i = 0; i < 4; i++) {
-      posY[i] = 200*i;
-      posX[i] = 150;
-      stripePos = new PVector(posX[i], posY[i]);
-    }
-  }
-  
-  void run() {
-    renderS();
-    updateS();
-  }
-  void updateS() {
-    for(int i = 0; i < 4; i++) {
-    stripePos.add(stripeVel);
-    }
-  }
-  void renderS() {
-    pushMatrix();
-      fill(255);
-      translate(stripePos.x, stripePos.y);
-      rect(0, 0, 20, 100);
-    popMatrix();
+//roadStripes stripes;
+
+void updateS() {
+  for (int i = 0; i < 8; i++) {
+    posY[i] += stripeVel;
   }
 }
 
-roadStripes stripes;
+void runS() {
+  for (int i = 0; i < 8; i++) {
+    pushMatrix();
+    fill(255); 
+    translate(posX1[i], posY[i]);
+    rect(0, 0, 20, 100);
+    translate(posX2[i]-posX1[i], posY[i]-posY[i]);
+    rect(0, 0, 20, 100);
+    popMatrix();
+  }
+}
 
 void setup() {
   size(800, 800);
   stripeX = 0;
   stripeY = 0;
+
+  stripeVel = 4;
+  for (int i = 0; i < 8; i++) {
+    posY[i] = -800 + 200*i;
+    posX1[i] = 270;
+    posX2[i] = 500;
+  }
+  
+  carFinalY[0] = 100;
+  carFinalY[1] = 300;
+  carFinalY[2] = 100;
+}
+
+void mouseMoved() {
+  println(mouseX + " " + mouseY);
 }
 
 void draw() {
   background(100, 100, 20);
   fill(50);
   rect(50, 0, width-100, height);
-  Car1(100, 100);
-  Car2(300, 300);
-  Bus(500, 100);
-  stripes.run();
+  runS();
+  updateS();
+  for (int i = 0; i < 8; i++) {
+    if (posY[i] > 800) {
+      posY[i] = -800;
+    }
+  }
+  for (int i = 0; i < 3; i++) {
+    carVelocityX[i] = int(random(-2, 4));
+    //carVelocityY[i] = int(random(-15, -30));
+  }
+  
+  if (frameCount % 60 == 30) {
+    for (int i = 0; i < 3; i++) {
+      carVelocityY[i] = int(random(-2, 2));
+    }
+  }
+  
+  for (int i = 0; i < 3; i++) {
+    carFinalY[i] += carVelocityY[i];
+  }
+  
+  println(carVelocityY[0]);
+  Car1(100+carVelocityX[0], carFinalY[0]);
+  Car2(300-carVelocityX[1], carFinalY[1]);
+  Bus(500+carVelocityX[2], carFinalY[2]);
+  
 }
