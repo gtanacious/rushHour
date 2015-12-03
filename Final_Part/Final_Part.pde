@@ -1,7 +1,7 @@
 //Scene1: wake up and find out late to work
 
-//import processing.sound.*;
-//SoundFile file;
+import processing.sound.*;
+SoundFile file;
 
 PImage img1;
 
@@ -245,9 +245,9 @@ void setup() {
   img1.resize(200, 231);
   println(img1.height, img1.width);
 
-  //file = new SoundFile(this, "Scream.mp3");
-  //file.amp(.6);
-  //file.loop();
+  file = new SoundFile(this, "Scream.mp3");
+  file.amp(.6);
+  file.loop();
 }
 
 
@@ -523,9 +523,11 @@ void draw() {
   } 
 
   if (scene2Start == true) {
-    background(200, 200, 255);
+    background(139, 211, 255);
     fill(100);
     rect(0, 700, width, 100);
+    fill(246, 252, 84);
+    ellipse(700, 100, 60, 60);
     pushMatrix();
     translate(-100, -100);
     homeBuilding(100, 800);
