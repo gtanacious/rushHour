@@ -1,13 +1,13 @@
 void setup() {
-  size(250, 600);
+  size(750, 600);
   background(128);
 }
 
 void draw() {
-  //Car1();
-  //Car2();
+  car1();
+  Car2();
   //Bus();
-  Truck();
+  //Truck();
 }
 
 /*void car1(int x, int y, boolean direction) {
@@ -58,6 +58,59 @@ void draw() {
  }
  */
 
+void car1() {
+  strokeWeight(3);
+  //begin tires
+  pushMatrix();
+  //translate(x,y);
+  translate(50, 50);
+  fill(0);
+  rect(-5, 40, 20, 40, 5, 0, 0, 5);
+  rect(135, 40, 20, 40, 0, 5, 5, 0);
+  rect(-5, 220, 20, 40, 5, 0, 0, 5);
+  rect(135, 220, 20, 40, 0, 5, 5, 0);
+  //end tires
+  fill(41, 37, 38);
+  //fill(random(0,255), random(0,255), random(0,255));
+  rect(0, 0, 150, 300, 75, 75, 10, 10); //body
+  fill(201, 82, 16); //stripe color
+  //quad(90, 53, 110,
+  noStroke();
+  rect(40, 2, 20, 298, 25, 0, 0, 0); //left stripe
+  rect(90, 2, 20, 298, 0, 25, 0, 0); // right stripe
+  fill(54, 52, 53);
+  //pushMatrix();
+  //translate(0, 20);
+  quad(10, 70, 140, 70, 130, 120, 20, 120); // front windshield
+  //popMatrix();
+  quad(5, 70, 15, 125, 15, 225, 5, 260); // left window
+  quad(145, 70, 135, 125, 135, 225, 145, 260); // right window
+  quad(10, 260, 140, 260, 130, 230, 20, 230); // rear windshield
+  strokeWeight(3);
+  stroke(1);
+  fill(41, 37, 38);
+  line(5, 165, 15, 165); // left window divider
+  line(145, 165, 135, 165); // right window divider
+  noStroke();
+  fill(233, 232, 230);
+  //begin lights
+  pushMatrix();
+  translate(16, 16);
+  rotate(-PI/8);
+  rect(0, 0, 20, 8, 2, 2, 2, 2);
+  popMatrix();
+  pushMatrix();
+  translate(120, 10);
+  rotate(PI/8);
+  rect(0, 0, 20, 8, 2, 2, 2, 2);
+  popMatrix();
+  popMatrix();
+  //end lights
+  //fill()
+  stroke(5);
+  strokeWeight(1);
+}
+
 /*void Car2() {
  //begin tires
  fill(0);
@@ -92,7 +145,7 @@ void draw() {
 void Car2() {
   //begin tires
   pushMatrix();
-  translate(50, 50);
+  translate(550, 50);
   fill(0);
   rect(-5, 40, 20, 40, 5, 0, 0, 5);
   rect(135, 40, 20, 40, 0, 5, 5, 0);
@@ -101,12 +154,21 @@ void Car2() {
   //end tires
   fill(204, 0, 0);
   rect(0, 0, 150, 300, 45, 45, 10, 10); //body
+  noStroke();
   fill(54, 52, 53);
-  pushMatrix();
-  translate(0, 20);
-  quad(5, 50, 145, 50, 130, 100, 20, 100); // windshield
-  popMatrix();
-  quad(10, 220, 140, 220, 130, 250, 20, 250);
+  //pushMatrix();
+  //translate(0, 20);
+  quad(10, 70, 140, 70, 130, 120, 20, 120); // front windshield
+  //popMatrix();
+  quad(5, 70, 15, 125, 15, 225, 5, 260); // left window
+  quad(145, 70, 135, 125, 135, 225, 145, 260); // right window
+  quad(10, 280, 140, 280, 130, 250, 20, 250); // rear windshield
+  strokeWeight(3);
+  stroke(1);
+  fill(41, 37, 38);
+  line(5, 165, 15, 165); // left window divider
+  line(145, 165, 135, 165); // right window divider
+  noStroke();
   fill(233, 232, 230);
   //begin lights
   pushMatrix();
