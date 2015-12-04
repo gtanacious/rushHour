@@ -1474,8 +1474,12 @@ void draw() {
               }
             } else if (c.getId() == 1) {  //main car
               c.car1(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true);
-            } else
-              rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+            } else if (c.getLength() == 2) {
+              c.car2(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, false);
+              //rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+            } else if (c.getLength() == 3) {
+              c.Truck(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, false);
+            }
 
             c.toggleDrawn(true);
           }

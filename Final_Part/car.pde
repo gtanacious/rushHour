@@ -15,9 +15,9 @@ public class Car
   public Car(int id, int x, int y)
   {
     for (int i = 0; i < 15; i++)
-  {
-    elColor[i] = color(random(0, 255), random(0, 255), random(0, 255));
-  }
+    {
+      elColor[i] = color(random(0, 255), random(0, 255), random(0, 255));
+    }
     myId = id;
     if (myId == 1) isTargetCar = true;
 
@@ -354,11 +354,14 @@ public class Car
     //begin tires
     int ID = getId();
     pushMatrix();
+    translate(6,0);
     translate(x, y);
+    scale(0.8);
     if (horizontal) {
-      scale(0.8);
       translate(325, 8);
       rotate(PI/2);
+    } else{
+      translate(0,6);
     }
     fill(0);
     rect(-5, 40, 20, 40, 5, 0, 0, 5);
@@ -434,11 +437,14 @@ public class Car
   void Truck(int x, int y, boolean horizontal) {
     int ID = getId();
     pushMatrix();
+    translate(6, 0);
     translate(x, y);
+    scale(0.8);
     if (horizontal) {
-      scale(0.8);
       translate(475, 8);
       rotate(PI/2);
+    } else{
+      translate(0,6);
     }
     //pushMatrix();
     //translate(100, 150);
@@ -449,7 +455,7 @@ public class Car
     rect(135, 370, 20, 40, 0, 5, 5, 0);
     fill(elColor[ID]);
     rect(5, 0, 140, 150, 20, 20, 5, 5);
-    fill(0, 75, 275);
+    fill(red(elColor[ID] - 15), green(elColor[ID] - 15), blue(elColor[ID] - 15));
     rect(0, 150, 150, 300, 10, 10, 10, 10);
     //begin lights
     fill(236, 253, 170);
