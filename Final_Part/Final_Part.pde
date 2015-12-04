@@ -709,6 +709,14 @@ void mouseMoved() {
 void mousePressed() {
   if (scene4Start)
   {
+    if (mouseX > 800 && mouseY < 215) {
+      timer = millis() + 5000;
+    }
+    
+    if (mouseX > 800 && mouseY > 600) {
+      hasWon = true;
+    }
+    
     if (hasWon)
     {    
       levelNumber++;
