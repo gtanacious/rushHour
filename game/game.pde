@@ -10,10 +10,11 @@ int levelNumber;
 int shift;
 int timer;
 float textAnim;
-color[] carColor = new color[10];
+color[] carColor = new color[12];
 
 void setup()
 {
+  // Random car colors
   for (int i = 0; i < carColor.length; i++) {
     carColor[i] = color(random(0, 255), random(0, 255), random(0, 255));
   }
@@ -207,10 +208,12 @@ void draw()
 
           fill(c.getColor());
           if (c.canGoHorizontal && c.getId() != 1) {
-            rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+            c.car2(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true, color[c.getId()]);
+            //rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
           }
           if (c.getId() == 1) {
             c.car1(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true);
+          }
           } else
             rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
 

@@ -345,7 +345,7 @@ public class Car
     strokeWeight(1);
   }
 
-  void car2() {
+  void car2(int x, int y, horizontal, color Color) {
     //begin tires
     pushMatrix();
     translate(550, 50);
@@ -355,7 +355,7 @@ public class Car
     rect(-5, 220, 20, 40, 5, 0, 0, 5);
     rect(135, 220, 20, 40, 0, 5, 5, 0);
     //end tires
-    fill(204, 0, 0);
+    fill(Color);
     rect(0, 0, 150, 300, 45, 45, 10, 10); //body
     noStroke();
     fill(54, 52, 53);
