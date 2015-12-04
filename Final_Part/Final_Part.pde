@@ -24,7 +24,7 @@ float opac;
 int soundCount = 0;
 
 //movement variable
-float personXEnd = 343;
+float personXEnd = 443;
 float personYEnd = 673;
 
 int numDialogue1 = 3;
@@ -199,14 +199,14 @@ void rightFence() {
   translate(100, 800);//same as the homeBuilding
   strokeWeight(5);
   stroke(255);
-  line(190, -100, 190, -43);
-  line(187.5, -100, 192.5, -100);
+  line(290, -100, 290, -43);
+  line(287.5, -100, 292.5, -100);
   strokeWeight(3);
-  line(190, -95, 295, -95);
-  line(190, -47, 295, -47);
+  line(290, -95, 395, -95);
+  line(290, -47, 395, -47);
   strokeWeight(2);
   for (int i = 0; i < 10; i++) {
-    line(200 + i*10, -95, 200 + i*10, -47);
+    line(300 + i*10, -95, 300 + i*10, -47);
   }
   popMatrix();
 }
@@ -702,6 +702,9 @@ void setup() {
   timer = 0;
 }
 
+void mouseMoved() {
+  println(mouseX + " " + mouseY);
+}
 
 void mousePressed() {
   if (scene4Start)
@@ -1089,19 +1092,19 @@ void draw() {
   if (scene2Start == true && scene3Start == false) {
 
     //if (soundCount == 0) {
-    //  file.play();
-    //  soundCount++;
+    // file.play();
+    // soundCount++;
     //}
     background(139, 211, 255);
-    fill(100);
+    fill(24, 164, 34);
     rect(0, 700, width, 100);
     fill(246, 252, 84);
-    ellipse(700, 100, 60, 60);
+    ellipse(800, 100, 60, 60);
     pushMatrix();
     translate(-100, -100);
-    homeBuilding(100, 800);
+    homeBuilding(200, 800);
 
-    if (personXEnd > 250 && personYEnd != 750) {
+    if (personXEnd > 350 && personYEnd != 750) {
       drawPerson(personXEnd, personYEnd, 0.3);
       rightFence();
     } else {
@@ -1111,7 +1114,7 @@ void draw() {
 
     //leg animation both directions
 
-    if (personXEnd > 250 && personYEnd == 673) {
+    if (personXEnd > 350 && personYEnd == 673) {
       if (LlegR > radians(10)) {
         LlegFor = true;
       }
@@ -1139,7 +1142,7 @@ void draw() {
       }
     }
 
-    if (personXEnd == 250 && personYEnd > 673 && personYEnd < 750) {
+    if (personXEnd == 350 && personYEnd > 673 && personYEnd < 750) {
       if (LlegH < 70) {
         LlegUp = true;
       }
@@ -1228,7 +1231,7 @@ void draw() {
       LfarmR = -80;
       RfarmR = -80;
     }
-    if (personYEnd > 673 && personYEnd < 750 && personXEnd == 250) {
+    if (personYEnd > 673 && personYEnd < 750 && personXEnd == 350) {
       LfarmR = radians(-150);
       RfarmR = radians(150);
     }
@@ -1252,11 +1255,11 @@ void draw() {
     }
 
     //whole person animation
-    if (personXEnd > 250 && personYEnd != 750) {
+    if (personXEnd > 350 && personYEnd != 750) {
       personXEnd-= 3;
     }
 
-    if (personXEnd == 250 && personYEnd < 750) {
+    if (personXEnd == 350 && personYEnd < 750) {
       personYEnd += 1;
     }
 
@@ -1339,7 +1342,7 @@ void draw() {
         text(" 'I see a lot of traffic up ahead!' ", width/2, height*.9);
       } else {
         if (dialogue2[1] == false) {
-          text(" 'Help me get through it on time!' ", width/2, height*.93);
+          text(" 'Help me get through it on time!' ", width/2, height*.9);
         }
       }
     }
@@ -1507,7 +1510,7 @@ void draw() {
     {
       if (c.isTargetCar() && c.getLastX() == 5 && !hasLost)
       {
-        textAnim+=1;
+        textAnim+=3;
         hasWon = true;
         stroke(0, textAnim);
         fill(230, (int)textAnim);
@@ -1728,6 +1731,7 @@ void draw() {
     }
     if (scene5Start == true && trans4Done == false) {
       textAnim = 0;
+      personYEnd = 720;
       if (opac > 0) {
         opac -= 5;
       } else {
