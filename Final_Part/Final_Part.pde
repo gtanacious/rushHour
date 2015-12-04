@@ -1361,7 +1361,7 @@ void draw() {
 
   //THIS IS THE CODE FOR SCENE 4, ACTUAL GAME
   if (scene4Start == true && scene5Start == false) {
-    background(150);
+    background(100);
     noStroke();
 
     if (anim > 20)
@@ -1374,8 +1374,8 @@ void draw() {
     rect(5*boardWidth+boardWidth/8, 2*boardWidth+boardWidth/2.5, 70, 25);
     triangle(5*boardWidth+75, 2*boardWidth+91, 5*boardWidth+116, 2*boardWidth+66, 5*boardWidth+75, 2*boardWidth+40);
 
-    stroke(0);
-    strokeWeight(5);
+    stroke(75);
+    strokeWeight(0);
     for (int y = 0; y < board.length; y++)
     {
       for (int x = 0; x < board[y].length; x++)
@@ -1481,12 +1481,12 @@ void draw() {
                 //rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
               }
             } else if (c.getId() == 1) {  //main car
-              c.car1(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true);
+              c.car1(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth  + c.getAnimShift(), true);
             } else if (c.getLength() == 2) {
-              c.car2(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, false);
+              c.car2(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth  + c.getAnimShift(), false);
               //rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
             } else if (c.getLength() == 3) {
-              c.Truck(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, false);
+              c.Truck(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth  + c.getAnimShift(), false);
             }
 
             c.toggleDrawn(true);
