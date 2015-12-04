@@ -6,6 +6,8 @@ SoundFile file;
 PImage img1;
 PFont fontBold;
 
+int congratLog = 0;
+
 float personRotate;
 float LlegR;
 float RlegR;
@@ -245,7 +247,7 @@ void homeBuilding(float homePositionX, float homePositionY) {
   stroke(255);
   line(305, -202, 305, 0);
   stroke(74, 28, 33);
-  line(300, -195, 300, 0);
+  line(300, -195, 300, -10);
   stroke(210, 210, 210);
   fill(210, 210, 210);
   line(295, -195, 295, -40);
@@ -499,7 +501,7 @@ void workplaceBuilding(float workplacePositionX, float workplacePositionY) {
   strokeWeight(2);
   line(-15, -73.5, 263, -73.5);
   textFont(fontBold);
-  text("Rush Hour", 97, -63);
+  text("Rush Hour", 125, -63);
   line(1, -60, 249, -60);
   strokeWeight(8);
   line(250, 0, 250, -60);
@@ -1006,8 +1008,8 @@ void draw() {
     fill(150);
     rect(0, height*.7, width, height*.3);
     fill(95, 53, 54);
-    rect(500, 200, 220, 251);
-    image(img1, 510, 210);
+    rect(650, 200, 220, 251);
+    image(img1, 660, 210);
 
     drawCouch();
 
@@ -1514,6 +1516,7 @@ void draw() {
         textAlign(CENTER);
         textFont(createFont("Times", 80, true), 80);
         text("YOU WIN!", 400, 400);
+        personXEnd = -500;
       }
       if (hasLost)
       {
@@ -1537,6 +1540,21 @@ void draw() {
     workplaceBuilding(380, 800);
 
     drawPerson(personXEnd, personYEnd, 0.3);
+
+    if (congratLog == 1) {
+      //Congrats animation
+      if (textAnim < 130) {
+        textAnim+=1;
+      }
+      stroke(0, textAnim);
+      fill(230, (int)textAnim);
+      rect(50, 300, 900, 260);
+      fill(10, (int)textAnim+50);
+      textAlign(CENTER);
+      textFont(createFont("Times", 80, true), 80);
+      text("Now you can work for ever!", 500, 400);
+      text("How fun it is!", 500, 530);
+    }
 
     //leg animation both directions
     if (LlegR > radians(10)) {
@@ -1634,6 +1652,7 @@ void draw() {
 
       if (personXEnd < 5) {
         personRotate = PI/2;
+        congratLog = 1;
       }
     }
 
@@ -1695,6 +1714,7 @@ void draw() {
   }
 
   if (scene4Done == true) {
+
     fill(0, opac);
     rect(0, 0, width, height);
     if (scene5Start == false) {
@@ -1707,6 +1727,7 @@ void draw() {
       }
     }
     if (scene5Start == true && trans4Done == false) {
+      textAnim = 0;
       if (opac > 0) {
         opac -= 5;
       } else {
