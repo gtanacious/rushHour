@@ -4,7 +4,9 @@ import processing.sound.*;
 SoundFile file;
 
 PImage img1;
+PFont fontBold;
 
+float personRotate;
 float LlegR;
 float RlegR;
 float LarmR;
@@ -53,7 +55,7 @@ int timer;
 float textAnim;
 
 
-boolean scene1Done, scene2Start, trans1Done, scene2Done, scene3Start, trans2Done, scene3Done, scene4Start, trans3Done;
+boolean scene1Done, scene2Start, trans1Done, scene2Done, scene3Start, trans2Done, scene3Done, scene4Start, trans3Done, scene4Done, scene5Start, trans4Done;
 boolean waveF;
 boolean scratch;
 boolean pupilLeft;
@@ -365,8 +367,205 @@ void homeBuilding(float homePositionX, float homePositionY) {
   popMatrix();
 }
 
+void workplaceBuilding(float workplacePositionX, float workplacePositionY) {
+  pushMatrix();
+  translate(workplacePositionX, workplacePositionY);
+  //bottom part
+  fill(255, 221, 120);
+  stroke(255, 221, 120);
+  strokeWeight(2);
+  //structure
+  rect(0, -60, 250, 60);
+  //fill(0);
+  triangle(-20, -75.5, 0, -60, 250, -60);
+  triangle(270, -75.5, 250, -59.5, -13, -75);
+  rect(-20, -80, 290, 5);
+  //window
+  for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 10; j++) {
+      if (i == 0) {
+        windowRect(8+7.5*(j+1) + 15*j, -55+5*(i+1) + 20*i);
+      }
+      if (i == 1) {
+        windowRect(8+7.5*(j+1) + 15*j, -55+8*(i+1) + 20*i);
+      }
+    }
+  }
+  //main part
+  fill(255, 221, 120);
+  stroke(255, 221, 120);
+  rect(8, -480, 238, 400);
+  //window
+  for (int i = 0; i < 11; i++) {
+    if (i == 0) {
+      windowCircle(30, -175);
+    }
+    if (i >= 1) {
+      windowCircle(30+8*i+10*i, -175);
+    }
+  }
+  for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 9; j++) {
+      if (i == 0) {
+        windowRect(20+7.5*(j+1) + 15*j, -460+10*(i+1) + 20*i);
+      }
+      if (i >= 1) {
+        windowRect(20+7.5*(j+1) + 15*j, -460+10*(i+1) + 20*i);
+      }
+    }
+  }
+  for (int i = 0; i < 37; i++) {
+    if (i == 0) {
+      windowBlue(20, -478);
+    }
+    if (i >= 1) {
+      windowBlue(20+2*i+4*i, -478);
+    }
+  }
+  //Trapzoid part
+  fill(255, 221, 120);
+  stroke(255, 221, 120);
+  triangle(104, -700, 109, -720, 150, -700);//3rd
+  triangle(112, -720, 145, -720, 150, -700);
+  //3rd trapezoid window
+  for (int i = 0; i < 2; i++) {
+    if (i == 0) {
+      windowCircle(115, -750);
+    }
+    if (i >= 1) {
+      windowCircle(115+8*i+9.5*i, -750);
+    }
+  }
+  fill(255, 221, 120);
+  stroke(255, 221, 120);
+  triangle(84, -680, 89, -700, 170, -680);//2nd
+  triangle(95, -700, 165, -700, 170, -680);
+  //2nd trapezoid window
+  for (int i = 0; i < 4; i++) {
+    if (i == 0) {
+      windowCircle(96, -730);
+    }
+    if (i >= 1) {
+      windowCircle(96+8*i+9.5*i, -730);
+    }
+  }
+  fill(255, 221, 120);
+  stroke(255, 221, 120);
+  triangle(64, -650, 69, -680, 190, -650);//1st
+  triangle(76, -680, 185, -680, 190, -650);
+  //1st trapezoid window
+  for (int i = 0; i < 6; i++) {
+    if (i == 0) {
+      windowCircle(80, -706);
+    }
+    if (i >= 1) {
+      windowCircle(80+8*i+9.5*i, -706);
+    }
+  }
+  //top part
+  fill(255, 221, 120);
+  stroke(255, 221, 120);
+  rect(24, -650, 206, 170);
+  //window
+  for (int i = 0; i < 11; i++) {
+    if (i == 0) {
+      windowCircle(38, -676);
+    }
+    if (i >= 1) {
+      windowCircle(38+8*i+9*i, -676);
+    }
+  }
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 8; j++) {
+      if (i == 0) {
+        windowRect(30+8*(j+1) + 15*j, -590+11.5*(i+1) + 20*i);
+      }
+      if (i >= 1) {
+        windowRect(30+8*(j+1) + 15*j, -590+11.5*(i+1) + 20*i);
+      }
+    }
+  }
+  //stick
+  fill(252, 253, 253);
+  stroke(252, 253, 253);
+  rect(124.5, -784, 5, 64);
+  ellipse(127, -792, 16, 16);
+
+  //Shadow
+  fill(199, 154, 32);
+  stroke(199, 154, 32);
+  strokeWeight(1.5);
+  line(-18, -79, 268, -79);
+  strokeWeight(2);
+  line(-15, -73.5, 263, -73.5);
+  textFont(fontBold);
+  text("Rush Hour", 97, -63);
+  line(1, -60, 249, -60);
+  strokeWeight(8);
+  line(250, 0, 250, -60);
+  line(250, -60, 270, -75.5);
+  line(270, -75.5, 270, -76);
+  strokeWeight(7.5);
+  line(246, -85, 246, -478);
+  strokeWeight(7);
+  line(230, -484.5, 230, -648);
+  strokeWeight(3);
+  line(18, -462, 238, -462);
+  line(24, -646, 230, -646);
+  line(69, -680, 185, -680);
+  line(185, -680, 190, -652.5);
+  line(89, -700, 165, -700);
+  line(165, -700, 170, -682.5);
+  line(109, -720, 145, -720);
+  line(145, -720, 150, -700);
+  //stick shadow
+  fill(168, 154, 150);
+  stroke(168, 154, 150);
+  line(129.5, -782.5, 129.5, -722);
+  arc(129.5, -791, 10, 10, radians(-35), radians(135));
+  popMatrix();
+}
+
+void windowRect(float windowRectX, float windowRectY) {
+  pushMatrix();
+  translate(windowRectX, windowRectY);
+  fill(0, 60, 243);
+  stroke(0, 60, 243);
+  rect(0, 0, 15, 20);
+  fill(0, 207, 253);
+  stroke(0, 207, 253);
+  rect(3, 4, 12, 16);
+  popMatrix();
+}
+
+void windowCircle(float windowCircleX, float windowCircleY) {
+  pushMatrix();
+  translate(windowCircleX, windowCircleY);
+  fill(0, 60, 243);
+  stroke(0, 60, 243);
+  arc(4, 40, 8, 8, PI, 2*PI);
+  rect(0, 40, 8, 45);
+  fill(0, 207, 253);
+  stroke(0, 207, 253);
+  arc(5, 42, 6, 6, PI, 2*PI);
+  rect(2, 42, 6, 43);
+  popMatrix();
+}
+
+void windowBlue(float windowBlueX, float windowBlueY) {
+  pushMatrix();
+  translate(windowBlueX, windowBlueY);
+  fill(0, 42, 243);
+  stroke(0, 42, 243);
+  rect(0, 0, 1, 12);
+  popMatrix();
+}
+
 void setup() {
   size(1000, 800);
+
+  fontBold = createFont("Arial Bold", 9);
+
   LlegR = radians(10);
   RlegR = radians(-10);
   LarmR = radians(75);
@@ -376,7 +575,7 @@ void setup() {
   LlegH = 80;
   RlegH = 80;
   tx = 0;
-
+  personRotate = 0;
   for (int j=0; j<numDialogue1; j++) {
     dialogue1[j] = false;
   }
@@ -392,6 +591,9 @@ void setup() {
   scene3Done = false;
   scene4Start = false;
   trans3Done = false;
+  scene4Done = false;
+  scene5Start = false;
+  trans4Done = false;
   LlegFor = true;
   RlegFor = false;
   LlegUp = false;
@@ -540,6 +742,7 @@ void mousePressed() {
       } else
       {
         //do something to switch to the last scene. WIN CONDITION
+        scene4Done = true;
       }
     } else if (hasLost)
     {
@@ -627,6 +830,7 @@ void drawPerson(float personX, float personY, float scaleF) {
   pushMatrix();
   translate(personX, personY);
   scale(scaleF);
+  rotate(personRotate);
   //Left leg
   pushMatrix();
   translate(-55, LlegH);
@@ -1072,7 +1276,7 @@ void draw() {
     rect(0, 0, width, height);
     if (scene2Start == false) {
       if (opac < 255) {
-        opac += 2;
+        opac += 5;
       } else {
         opac += 0;
         scene2Start = true;
@@ -1080,7 +1284,7 @@ void draw() {
     }
     if (scene2Start == true && trans1Done == false) {
       if (opac > 0) {
-        opac -= 2;
+        opac -= 5;
       } else {
         opac -=0;
         trans1Done = true;
@@ -1143,7 +1347,7 @@ void draw() {
   }
 
   //THIS IS THE CODE FOR SCENE 4, ACTUAL GAME
-  if (scene4Start == true) {
+  if (scene4Start == true && scene5Start == false) {
     background(150);
     noStroke();
 
@@ -1317,12 +1521,131 @@ void draw() {
     }
   }
 
+
+  //THIS IS THE CODE FOR SCENE 5, WIN CONDITION
+  if (scene5Start == true) {
+    background(0, 131, 204);
+    workplaceBuilding(380, 800);
+
+    drawPerson(personXEnd, personYEnd, 0.3);
+
+    //leg animation both directions
+    if (LlegR > radians(10)) {
+      LlegFor = true;
+    }
+    if (LlegR < radians(-10)) {
+      LlegFor = false;
+    }
+
+    if (LlegFor == true) {
+      LlegR -= radians(1);
+    } else {
+      LlegR += radians(1);
+    }
+
+    if (RlegR > radians(10)) {
+      RlegFor = true;
+    }
+    if (RlegR < radians(-10)) {
+      RlegFor = false;
+    }
+
+    if (RlegFor == true) {
+      RlegR -= radians(1);
+    } else {
+      RlegR += radians(1);
+    }
+
+
+    //arm animation
+    RarmR = -LarmR;
+
+    if (LarmR > radians(75)) {
+      runL = true;
+    }
+    if (LarmR < radians(0) ) {
+      runL = false;
+    }
+
+    if (runL) {
+      LarmR -= radians(2);
+    } else {
+      LarmR += radians(2);
+    }
+
+    if (RarmR > radians(75)) {
+      runR = true;
+    }
+    if (RarmR < radians(0) ) {
+      runR = false;
+    }
+
+    if (runR) {
+      RarmR -= radians(2);
+    } else {
+      RarmR += radians(2);
+    }
+
+    //eye animation
+    if (tx < -6) {
+      pupilLeft = true;
+    }
+    if (tx > 6) {
+      pupilLeft = false;
+    }
+    if (pupilLeft) {
+      tx += 1;
+    } else {
+      tx -= 1;
+    }
+
+    //whole person animation
+    if (personRotate == 0) {
+      if (personXEnd < 1000) {
+        personXEnd+=10;
+      }
+
+      if (personXEnd > 995) {
+        personRotate = -PI/2;
+      }
+    }
+
+    if (personRotate == -PI/2) {
+      personXEnd = 920;
+      personYEnd-=10;
+
+      if (personYEnd < 5) {
+        personRotate = -PI;
+      }
+    }
+
+    if (personRotate == -PI) {
+      personYEnd = 80;
+      personXEnd -=10;
+
+      if (personXEnd < 5) {
+        personRotate = PI/2;
+      }
+    }
+
+    if (personRotate == PI/2) {
+      personXEnd = 80;
+      personYEnd +=10;
+
+      if (personYEnd > 795) {
+        personRotate = 0;
+        personYEnd = 720;
+      }
+    }
+  }
+
+
   if (scene2Done == true) {
     fill(0, opac);
     rect(0, 0, width, height);
     if (scene3Start == false) {
       if (opac < 255) {
-        opac += 2;
+        opac += 5;
       } else {
         opac += 0;
         scene3Start = true;
@@ -1331,7 +1654,7 @@ void draw() {
     }
     if (scene3Start == true && trans2Done == false) {
       if (opac > 0) {
-        opac -= 2;
+        opac -= 5;
       } else {
         opac -=0;
         trans2Done = true;
@@ -1344,7 +1667,7 @@ void draw() {
     rect(0, 0, width, height);
     if (scene4Start == false) {
       if (opac < 255) {
-        opac += 2;
+        opac += 5;
       } else {
         opac += 0;
         scene4Start = true;
@@ -1354,10 +1677,32 @@ void draw() {
     }
     if (scene4Start == true && trans3Done == false) {
       if (opac > 0) {
-        opac -= 2;
+        opac -= 5;
       } else {
         opac -=0;
         trans3Done = true;
+      }
+    }
+  }
+
+  if (scene4Done == true) {
+    fill(0, opac);
+    rect(0, 0, width, height);
+    if (scene5Start == false) {
+      if (opac < 255) {
+        opac += 5;
+      } else {
+        opac += 0;
+        scene5Start = true;
+        trans4Done = false;
+      }
+    }
+    if (scene5Start == true && trans4Done == false) {
+      if (opac > 0) {
+        opac -= 5;
+      } else {
+        opac -=0;
+        trans4Done = true;
       }
     }
   }
