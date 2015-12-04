@@ -1458,9 +1458,18 @@ void draw() {
           if (c.getId() == board[y][x] && !c.getDrawn())
           {
             fill(c.getColor());
-            if (c.canGoHorizontal)
-              rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
-            else
+            if (c.canGoHorizontal && c.getId() != 1) {
+              if (c.getLength() == 2) {
+                c.car2(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true);
+              }
+              if (c.getLength() == 3) {
+                //insert truck or bus here
+                c.Truck(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true);
+                //rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+              }
+            } else if (c.getId() == 1) {  //main car
+              c.car1(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true);
+            } else
               rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
 
             c.toggleDrawn(true);
