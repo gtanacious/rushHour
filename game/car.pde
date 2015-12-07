@@ -345,7 +345,7 @@ public class Car
     strokeWeight(1);
   }
 
-  void car2(int x, int y, horizontal, color Color) {
+  void car2(int x, int y, boolean horizontal, color Color) {
     //begin tires
     pushMatrix();
     translate(550, 50);

@@ -4,6 +4,7 @@ ArrayList<int[][]> level;
 int boardWidth, anim;
 boolean hasWon, hasLost;
 ArrayList<Car> cars;
+ArrayList<Particles> particles;
 Car mySelectedCar;
 int[][] board; 
 int levelNumber;
@@ -89,6 +90,13 @@ void setup()
         }
       }
     }
+  }
+
+  particles = new ArrayList<Particles>();
+
+  for (int i = 0; i < 30; i++)
+  {
+    particles.add(new Particles(500, (int)random(1000, 800), random(-2, 2), random(-5, -3), true));
   }
 
   timer = 60000;
@@ -206,22 +214,24 @@ void draw()
         if (c.getId() == board[y][x] && !c.getDrawn())
         {
 
-          fill(c.getColor());
+
           if (c.canGoHorizontal && c.getId() != 1) {
-            c.car2(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true, color[c.getId()]);
-            //rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+            //c.car2(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true, color[c.getId()]);
+            fill(c.getColor());
+            rect(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
           }
           if (c.getId() == 1) {
             c.car1(c.getFirstX() * boardWidth + c.getAnimShift(), c.getFirstY() * boardWidth, true);
           }
-          } else
-            rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
+        } else
+          fill(c.getColor());
+        rect(c.getFirstX() * boardWidth, c.getFirstY() * boardWidth + c.getAnimShift(), (c.getLastX()+1 - c.getFirstX()) * boardWidth, (c.getLastY()+1 - c.getFirstY()) * boardWidth);
 
-          c.toggleDrawn(true);
-        }
+        c.toggleDrawn(true);
       }
     }
   }
+
 
 
   int timeLeft = 0;
@@ -242,7 +252,7 @@ void draw()
   textFont(createFont("Times", 80, true), 30);
   text("Time Left:", 900, 100);
   if (((timeLeft/1000)%60) < 10)
-  text(timeLeft/60000 + ":0" + (timeLeft/1000)%60+"", 900, 200);
+    text(timeLeft/60000 + ":0" + (timeLeft/1000)%60+"", 900, 200);
   else
     text(timeLeft/60000 + ":" + (timeLeft/1000)%60+"", 900, 200);
 
@@ -255,24 +265,45 @@ void draw()
       hasWon = true;
       stroke(0, textAnim);
       fill(230, (int)textAnim);
-      rect(200, 300, 400, 130);
+      rect(200, 300, 400, 170);
       fill(10, (int)textAnim);
       textAlign(CENTER);
       textFont(createFont("Times", 80, true), 80);
       text("YOU WIN!", 400, 400);
+      textFont(createFont("Times", 80, true), 25);
+      text("Click to continue...", 400, 450);
     }
     if (hasLost)
     {
       textAnim+=0.1;
       stroke(0, textAnim);
       fill(230, (int)textAnim);
-      rect(200, 300, 400, 130);
+      rect(200, 300, 400, 170);
       fill(10, (int)textAnim);
       textAlign(CENTER);
       textFont(createFont("Times", 80, true), 80);
       text("YOU LOST", 400, 400);
+      textFont(createFont("Times", 80, true), 25);
+      text("Click to try again...", 400, 450);
     }
     c.toggleDrawn(false);
+  }
+
+  if (!particles.isEmpty())
+  {
+    for (Particles p : particles)
+    {
+      p.updateParticle();
+      p.drawParticle();
+    }
+
+    for (int i = 0; i < particles.size(); i++)
+    {
+      if (particles.get(i).isRemovable)
+      {
+        particles.set(i, new Particles(500, (int)random(1000, 800), random(-2, 2), random(-5, -3), true));
+      }
+    }
   }
 }
 
@@ -313,10 +344,9 @@ void mousePressed()
           }
         }
       }
-    }
-    else
+    } else
     {
-      //do something to switch to the last scene. 
+      //do something to switch to the last scene.
     }
   } else if (hasLost)
   {
@@ -368,7 +398,7 @@ void mousePressed()
     }
   }
 }
-}
+
 
 void mouseDragged()
 {
