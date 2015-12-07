@@ -49,6 +49,7 @@ ArrayList<int[][]> level;
 int boardWidth, anim;
 boolean hasWon, hasLost;
 ArrayList<Car> cars;
+ArrayList<Particles> particles;
 Car mySelectedCar;
 int[][] board; 
 int levelNumber;
@@ -697,6 +698,13 @@ void setup() {
         }
       }
     }
+  }
+    
+  particles = new ArrayList<Particles>();
+
+  for (int i = 0; i < 30; i++)
+  {
+    particles.add(new Particles(500, (int)random(1000, 800), random(-2, 2), random(-5, -3), true));
   }
 
   timer = 0;
@@ -1551,6 +1559,7 @@ void draw() {
 
   //THIS IS THE CODE FOR SCENE 5, WIN CONDITION
   if (scene5Start == true) {
+    
     background(0, 131, 204);
     workplaceBuilding(380, 800);
 
@@ -1680,6 +1689,26 @@ void draw() {
         personYEnd = 720;
       }
     }
+    
+    
+  if (!particles.isEmpty())
+  {
+    for (Particles p : particles)
+    {
+      p.updateParticle();
+      p.drawParticle();
+    }
+
+    for (int i = 0; i < particles.size(); i++)
+    {
+      if (particles.get(i).isRemovable)
+      {
+        particles.set(i, new Particles(500, (int)random(1000, 800), random(-2, 2), random(-5, -3), true));
+      }
+    }
+  }
+
+    
   }
 
 
