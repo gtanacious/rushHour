@@ -699,7 +699,7 @@ void setup() {
       }
     }
   }
-    
+
   particles = new ArrayList<Particles>();
 
   for (int i = 0; i < 30; i++)
@@ -720,11 +720,11 @@ void mousePressed() {
     if (mouseX > 800 && mouseY < 215) {
       timer = millis() + 5000;
     }
-    
+
     if (mouseX > 800 && mouseY > 600) {
       hasWon = true;
     }
-    
+
     if (hasWon)
     {    
       levelNumber++;
@@ -1534,23 +1534,26 @@ void draw() {
         hasWon = true;
         stroke(0, textAnim);
         fill(230, (int)textAnim);
-        rect(200, 300, 400, 130);
+        rect(200, 300, 400, 170);
         fill(10, (int)textAnim);
         textAlign(CENTER);
         textFont(createFont("Times", 80, true), 80);
         text("YOU WIN!", 400, 400);
-        personXEnd = -500;
+        textFont(createFont("Times", 80, true), 25);
+        text("Click to continue...", 400, 450);
       }
       if (hasLost)
       {
         textAnim+=0.1;
         stroke(0, textAnim);
         fill(230, (int)textAnim);
-        rect(200, 300, 400, 130);
+        rect(200, 300, 400, 170);
         fill(10, (int)textAnim);
         textAlign(CENTER);
         textFont(createFont("Times", 80, true), 80);
         text("YOU LOST", 400, 400);
+        textFont(createFont("Times", 80, true), 25);
+        text("Click to try again...", 400, 450);
       }
       c.toggleDrawn(false);
     }
@@ -1559,7 +1562,7 @@ void draw() {
 
   //THIS IS THE CODE FOR SCENE 5, WIN CONDITION
   if (scene5Start == true) {
-    
+
     background(0, 131, 204);
     workplaceBuilding(380, 800);
 
@@ -1689,26 +1692,24 @@ void draw() {
         personYEnd = 720;
       }
     }
-    
-    
-  if (!particles.isEmpty())
-  {
-    for (Particles p : particles)
-    {
-      p.updateParticle();
-      p.drawParticle();
-    }
 
-    for (int i = 0; i < particles.size(); i++)
+
+    if (!particles.isEmpty())
     {
-      if (particles.get(i).isRemovable)
+      for (Particles p : particles)
       {
-        particles.set(i, new Particles(500, (int)random(1000, 800), random(-2, 2), random(-5, -3), true));
+        p.updateParticle();
+        p.drawParticle();
+      }
+
+      for (int i = 0; i < particles.size(); i++)
+      {
+        if (particles.get(i).isRemovable)
+        {
+          particles.set(i, new Particles(500, (int)random(1000, 800), random(-2, 2), random(-5, -3), true));
+        }
       }
     }
-  }
-
-    
   }
 
 
