@@ -444,7 +444,8 @@ public class Car
       translate(475, 8);
       rotate(PI/2);
     } else{
-      translate(0,6);
+      translate(150,470);
+      rotate(PI);
     }
     //pushMatrix();
     //translate(100, 150);
