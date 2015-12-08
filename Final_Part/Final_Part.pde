@@ -1579,8 +1579,8 @@ void draw() {
       fill(10, (int)textAnim+50);
       textAlign(CENTER);
       textFont(createFont("Times", 80, true), 80);
-      text("Now you can work for ever!", 500, 400);
-      text("How fun it is!", 500, 530);
+      text("Now you can work forever!", 500, 400);
+      text("How fun!", 500, 530);
     }
 
     //leg animation both directions
