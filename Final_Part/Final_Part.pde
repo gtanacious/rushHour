@@ -718,7 +718,7 @@ void setup() {
 
   for (int i = 0; i < 30; i++)
   {
-    particles.add(new Particles(500, (int)random(1000, 800), random(-2, 2), random(-5, -3), true));
+    particles.add(new Particles(500, (int)random(1000, 800), random(-4, 4), random(-10, -5), true));
   }
 
   timer = 0;

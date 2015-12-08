@@ -29,7 +29,7 @@ public class Particles
     }
     else
     {
-      alpha = 255 + (int)random(-100, 150);
+      alpha = 255 + (int)random(-100, 100);
     }
   }
 
@@ -39,10 +39,10 @@ public class Particles
     {
       //spawn a bunch of small ones.
       willDraw = false;
-      for (int i = 0; i < 200; i++)
+      for (int i = 0; i < (int)random(175, 275); i++)
       {
         float temp = random(0, TWO_PI);
-        smallerParticles.add(new Particles((int)X, (int)Y, cos(temp)*random(0.2, 2), sin(temp)*random(0.2, 2), false));
+        smallerParticles.add(new Particles((int)X, (int)Y, cos(temp)*random(0.7, 3), sin(temp)*random(0.2, 3), false));
         smallerParticles.get(i).setColor(myColor);
       }
     } else if (!willDraw && isFireWorkParticle)
@@ -56,6 +56,7 @@ public class Particles
           g.drawParticle();
           g.setAlpha(g.getAlpha()-1);
           g.changeYVector(0.015);
+          g.changeXVector(-0.01);
         }
         
         for(int i = 0; i < smallerParticles.size(); i++)
@@ -90,7 +91,7 @@ public class Particles
     {   
       fill(color(myColor, alpha));
       noStroke();
-      float randSize = random(-4, 3);
+      float randSize = random(-4, 3-alpha/100);
       ellipse(X, Y, 4+randSize, 4+randSize);
     }
   }
@@ -113,5 +114,13 @@ public class Particles
   public void changeYVector(float amnt)
   {
      myVector.y += amnt;
+  }
+  
+  public void changeXVector(float amnt)
+  {
+      if(myVector.x > 0)
+        myVector.x += amnt;
+      else
+        myVector.x -= amnt;
   }
 }
