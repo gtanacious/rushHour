@@ -1774,6 +1774,7 @@ void draw() {
     if (scene5Start == true && trans4Done == false) {
       textAnim = 0;
       personYEnd = 720;
+      personXEnd = -50;
       if (opac > 0) {
         opac -= 5;
       } else {
