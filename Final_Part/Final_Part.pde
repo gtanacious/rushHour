@@ -1296,6 +1296,8 @@ void draw() {
     }
 
     if (personYEnd == 750) {
+      LlegH = 80;
+      RlegH = 80;
       personXEnd+=3;
     }
 
@@ -1564,13 +1566,13 @@ void draw() {
         hasWon = true;
         stroke(0, textAnim);
         fill(230, (int)textAnim);
-        rect(200, 300, 400, 170);
+        rect(100, 300, 600, 170);
         fill(10, (int)textAnim);
         textAlign(CENTER);
-        textFont(createFont("Times", 80, true), 80);
-        text("YOU WIN!", 400, 400);
+        textFont(createFont("Times", 80, true), 50);
+        text("You passed this intersection!", 400, 380);
         textFont(createFont("Times", 80, true), 25);
-        text("Click to continue...", 400, 450);
+        text("Click to continue...", 400, 440);
       }
       if (hasLost)
       {
@@ -1581,13 +1583,13 @@ void draw() {
         textAnim+=0.1;
         stroke(0, textAnim);
         fill(230, (int)textAnim);
-        rect(200, 300, 400, 170);
+        rect(70, 300, 660, 170);
         fill(10, (int)textAnim);
         textAlign(CENTER);
-        textFont(createFont("Times", 80, true), 80);
-        text("YOU LOST", 400, 400);
+        textFont(createFont("Times", 80, true), 50);
+        text("You failed to get to work in time", 400, 380);
         textFont(createFont("Times", 80, true), 25);
-        text("Click to try again...", 400, 450);
+        text("Click to try again...", 400, 440);
       }
       c.toggleDrawn(false);
     }
