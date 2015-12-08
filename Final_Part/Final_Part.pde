@@ -1,7 +1,12 @@
 //Scene1: wake up and find out late to work
 
 import processing.sound.*;
-SoundFile file;
+SoundFile screamSound;
+SoundFile trafficSound;
+SoundFile gameSound;
+SoundFile correctSound;
+SoundFile darklaughSound;
+SoundFile applauseSound;
 
 PImage img1;
 PFont fontBold;
@@ -22,6 +27,7 @@ float opac;
 
 //soundCount
 int soundCount = 0;
+int soundCount2 = 0;
 
 //movement variable
 float personXEnd = 443;
@@ -624,9 +630,17 @@ void setup() {
   img1.resize(200, 231);
   println(img1.height, img1.width);
 
-  //file = new SoundFile(this, "Scream.mp3");
-  //file.amp(.6);
-  //file.loop();
+  screamSound = new SoundFile(this, "Scream.mp3");
+  trafficSound = new SoundFile(this, "Traffic.mp3");
+  gameSound = new SoundFile(this, "Game.mp3");
+  correctSound = new SoundFile(this, "Correct.mp3");
+  darklaughSound = new SoundFile(this, "DarkLaugh.mp3");
+  applauseSound = new SoundFile(this, "Applause.mp3");
+  
+  screamSound.amp(.6);
+  trafficSound.amp(.8);
+  //gameSound.amp(.7);
+  screamSound.loop();
 
   level = new ArrayList<int[][]>();
 
@@ -727,6 +741,7 @@ void mousePressed() {
 
     if (hasWon)
     {    
+      soundCount2 = 0;
       levelNumber++;
       if (levelNumber < level.size())
       {
@@ -767,6 +782,7 @@ void mousePressed() {
       }
     } else if (hasLost)
     {
+      soundCount2 = 0;
       levelNumber = 0;
       board = level.get(levelNumber);  
       hasWon = false;
@@ -1107,10 +1123,10 @@ void draw() {
   //THIS IS THE CODE FOR SCENE 2, RUNNING OUT OF HOUSE
   if (scene2Start == true && scene3Start == false) {
 
-    //if (soundCount == 0) {
-    // file.play();
-    // soundCount++;
-    //}
+    if (soundCount == 0) {
+     screamSound.play();
+     soundCount++;
+    }
     background(139, 211, 255);
     fill(24, 164, 34);
     rect(0, 700, width, 100);
@@ -1316,6 +1332,11 @@ void draw() {
 
   //THIS IS THE CODE FOR SCENE 3, DRIVING SCENE
   if (scene3Start == true && scene4Start == false) {
+    if (soundCount == 0) {
+     trafficSound.play();
+     soundCount++;
+    }
+    
     background(100, 100, 20);
     fill(50);
     rect(50, 0, width-100, height);
@@ -1369,6 +1390,11 @@ void draw() {
 
   //THIS IS THE CODE FOR SCENE 4, ACTUAL GAME
   if (scene4Start == true && scene5Start == false) {
+    if (soundCount == 0) {
+     gameSound.play();
+     soundCount++;
+    }
+    
     background(75);
     noStroke();
 
@@ -1530,6 +1556,10 @@ void draw() {
     {
       if (c.isTargetCar() && c.getLastX() == 5 && !hasLost)
       {
+        if (soundCount2 == 0){
+          correctSound.play();
+          soundCount2++;
+        }
         textAnim+=3;
         hasWon = true;
         stroke(0, textAnim);
@@ -1544,6 +1574,10 @@ void draw() {
       }
       if (hasLost)
       {
+        if (soundCount2 == 0){
+          darklaughSound.play();
+          soundCount2++;
+        }
         textAnim+=0.1;
         stroke(0, textAnim);
         fill(230, (int)textAnim);
@@ -1562,7 +1596,11 @@ void draw() {
 
   //THIS IS THE CODE FOR SCENE 5, WIN CONDITION
   if (scene5Start == true) {
-
+    if (soundCount == 0) {
+      applauseSound.play();
+      soundCount++;
+    }
+    
     background(0, 131, 204);
     workplaceBuilding(380, 800);
 
@@ -1722,6 +1760,7 @@ void draw() {
       } else {
         opac += 0;
         scene3Start = true;
+        soundCount = 0;
         trans2Done = false;
       }
     }
@@ -1744,6 +1783,8 @@ void draw() {
       } else {
         opac += 0;
         scene4Start = true;
+        soundCount = 0;
+        trafficSound.stop();
         timer = millis() + 60000;
         trans3Done = false;
       }
@@ -1768,6 +1809,7 @@ void draw() {
       } else {
         opac += 0;
         scene5Start = true;
+        soundCount = 0;
         trans4Done = false;
       }
     }
