@@ -625,9 +625,9 @@ void setup() {
   carFinalY[1] = 300;
   carFinalY[2] = 100;
 
-  img1 = loadImage("Lab8.jpg");
+  img1 = loadImage("Lab8.png");
   img1.loadPixels();
-  img1.resize(200, 231);
+  img1.resize(200, 178);
   println(img1.height, img1.width);
 
   screamSound = new SoundFile(this, "Scream.mp3");
@@ -1043,7 +1043,7 @@ void draw() {
     fill(150);
     rect(0, height*.7, width, height*.3);
     fill(95, 53, 54);
-    rect(650, 200, 220, 251);
+    rect(650, 200, 220, 198);
     image(img1, 660, 210);
 
     drawCouch();
